@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="oemahjowodbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="me_config">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CONFIG_NAME" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PARAMS" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="me_user">
+          <Key>
+            <PropertyRef Name="USER_CODE" />
+          </Key>
+          <Property Name="USER_CODE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USER_NAME" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="USER_PASS" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="USER_LEVEL" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mg_shoplist">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOTES" Type="varchar(max)" Nullable="false" />
+          <Property Name="AMOUNT" Type="float" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TRANS_DATE" Type="date" Nullable="false" />
+          <Property Name="ssma$rowid" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_customer">
+          <Key>
+            <PropertyRef Name="CUST_ID" />
+          </Key>
+          <Property Name="CUST_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CUST_NAME" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ADDRESS" Type="varchar(max)" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PHONE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_prod">
+          <Key>
+            <PropertyRef Name="PROD_ID" />
+          </Key>
+          <Property Name="PROD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PROD_NAME" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar(max)" Nullable="false" />
+          <Property Name="PRICE" Type="float" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_transaction">
+          <Key>
+            <PropertyRef Name="TRANS_ID" />
+          </Key>
+          <Property Name="TRANS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar(max)" Nullable="false" />
+          <Property Name="PROD_ID" Type="int" Nullable="false" />
+          <Property Name="PRICE" Type="float" Nullable="false" />
+          <Property Name="CUST_ID" Type="int" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TRANS_DATE" Type="date" Nullable="false" />
+          <Property Name="ITEM_AMT" Type="int" Nullable="false" />
+          <Property Name="IS_GOJEK" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="ssma$rowid" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_transdet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="TRANS_ID" Type="int" Nullable="false" />
+          <Property Name="SHOPPING_ID" Type="int" Nullable="false" />
+          <Property Name="AMOUNT" Type="float" Nullable="false" />
+          <Property Name="ISDEBIT" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ITEM_AMT" Type="int" Nullable="false" />
+          <Property Name="IS_GOJEK" Type="varchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_mt_transaction_mt_customer">
+          <End Role="mt_customer" Type="Self.mt_customer" Multiplicity="1" />
+          <End Role="mt_transaction" Type="Self.mt_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_customer">
+              <PropertyRef Name="CUST_ID" />
+            </Principal>
+            <Dependent Role="mt_transaction">
+              <PropertyRef Name="CUST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mt_transaction_mt_prod">
+          <End Role="mt_prod" Type="Self.mt_prod" Multiplicity="1" />
+          <End Role="mt_transaction" Type="Self.mt_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_prod">
+              <PropertyRef Name="PROD_ID" />
+            </Principal>
+            <Dependent Role="mt_transaction">
+              <PropertyRef Name="PROD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="oemahjowodbModelStoreContainer">
+          <EntitySet Name="me_config" EntityType="Self.me_config" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="me_user" EntityType="Self.me_user" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mg_shoplist" EntityType="Self.mg_shoplist" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mt_customer" EntityType="Self.mt_customer" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mt_prod" EntityType="Self.mt_prod" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mt_transaction" EntityType="Self.mt_transaction" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mt_transdet" EntityType="Self.mt_transdet" Schema="oemahjowodb" store:Type="Tables" />
+          <AssociationSet Name="FK_mt_transaction_mt_customer" Association="Self.FK_mt_transaction_mt_customer">
+            <End Role="mt_customer" EntitySet="mt_customer" />
+            <End Role="mt_transaction" EntitySet="mt_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mt_transaction_mt_prod" Association="Self.FK_mt_transaction_mt_prod">
+            <End Role="mt_prod" EntitySet="mt_prod" />
+            <End Role="mt_transaction" EntitySet="mt_transaction" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="oemahjowodbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="me_config">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CONFIG_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PARAMS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="me_user">
+          <Key>
+            <PropertyRef Name="USER_CODE" />
+          </Key>
+          <Property Name="USER_CODE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USER_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="USER_PASS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="USER_LEVEL" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mg_shoplist">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOTES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AMOUNT" Type="Double" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TRANS_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ssma_rowid" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_customer">
+          <Key>
+            <PropertyRef Name="CUST_ID" />
+          </Key>
+          <Property Name="CUST_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CUST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="mt_transaction" Relationship="Self.FK_mt_transaction_mt_customer" FromRole="mt_customer" ToRole="mt_transaction" />
+        </EntityType>
+        <EntityType Name="mt_prod">
+          <Key>
+            <PropertyRef Name="PROD_ID" />
+          </Key>
+          <Property Name="PROD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PROD_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PRICE" Type="Double" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="mt_transaction" Relationship="Self.FK_mt_transaction_mt_prod" FromRole="mt_prod" ToRole="mt_transaction" />
+        </EntityType>
+        <EntityType Name="mt_transaction">
+          <Key>
+            <PropertyRef Name="TRANS_ID" />
+          </Key>
+          <Property Name="TRANS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PROD_ID" Type="Int32" Nullable="false" />
+          <Property Name="PRICE" Type="Double" Nullable="false" />
+          <Property Name="CUST_ID" Type="Int32" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TRANS_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ITEM_AMT" Type="Int32" Nullable="false" />
+          <Property Name="IS_GOJEK" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ssma_rowid" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="mt_customer" Relationship="Self.FK_mt_transaction_mt_customer" FromRole="mt_transaction" ToRole="mt_customer" />
+          <NavigationProperty Name="mt_prod" Relationship="Self.FK_mt_transaction_mt_prod" FromRole="mt_transaction" ToRole="mt_prod" />
+        </EntityType>
+        <EntityType Name="mt_transdet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="TRANS_ID" Type="Int32" Nullable="false" />
+          <Property Name="SHOPPING_ID" Type="Int32" Nullable="false" />
+          <Property Name="AMOUNT" Type="Double" Nullable="false" />
+          <Property Name="ISDEBIT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ITEM_AMT" Type="Int32" Nullable="false" />
+          <Property Name="IS_GOJEK" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_mt_transaction_mt_customer">
+          <End Role="mt_customer" Type="Self.mt_customer" Multiplicity="1" />
+          <End Role="mt_transaction" Type="Self.mt_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_customer">
+              <PropertyRef Name="CUST_ID" />
+            </Principal>
+            <Dependent Role="mt_transaction">
+              <PropertyRef Name="CUST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mt_transaction_mt_prod">
+          <End Role="mt_prod" Type="Self.mt_prod" Multiplicity="1" />
+          <End Role="mt_transaction" Type="Self.mt_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_prod">
+              <PropertyRef Name="PROD_ID" />
+            </Principal>
+            <Dependent Role="mt_transaction">
+              <PropertyRef Name="PROD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="oemahjowodbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="me_config" EntityType="Self.me_config" />
+          <EntitySet Name="me_user" EntityType="Self.me_user" />
+          <EntitySet Name="mg_shoplist" EntityType="Self.mg_shoplist" />
+          <EntitySet Name="mt_customer" EntityType="Self.mt_customer" />
+          <EntitySet Name="mt_prod" EntityType="Self.mt_prod" />
+          <EntitySet Name="mt_transaction" EntityType="Self.mt_transaction" />
+          <EntitySet Name="mt_transdet" EntityType="Self.mt_transdet" />
+          <AssociationSet Name="FK_mt_transaction_mt_customer" Association="Self.FK_mt_transaction_mt_customer">
+            <End Role="mt_customer" EntitySet="mt_customer" />
+            <End Role="mt_transaction" EntitySet="mt_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mt_transaction_mt_prod" Association="Self.FK_mt_transaction_mt_prod">
+            <End Role="mt_prod" EntitySet="mt_prod" />
+            <End Role="mt_transaction" EntitySet="mt_transaction" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="oemahjowodbModelStoreContainer" CdmEntityContainer="oemahjowodbEntities">
+          <EntitySetMapping Name="me_config">
+            <EntityTypeMapping TypeName="oemahjowodbModel.me_config">
+              <MappingFragment StoreEntitySet="me_config">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CONFIG_NAME" ColumnName="CONFIG_NAME" />
+                <ScalarProperty Name="PARAMS" ColumnName="PARAMS" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="me_user">
+            <EntityTypeMapping TypeName="oemahjowodbModel.me_user">
+              <MappingFragment StoreEntitySet="me_user">
+                <ScalarProperty Name="USER_CODE" ColumnName="USER_CODE" />
+                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+                <ScalarProperty Name="USER_PASS" ColumnName="USER_PASS" />
+                <ScalarProperty Name="USER_LEVEL" ColumnName="USER_LEVEL" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mg_shoplist">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mg_shoplist">
+              <MappingFragment StoreEntitySet="mg_shoplist">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOTES" ColumnName="NOTES" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="TRANS_DATE" ColumnName="TRANS_DATE" />
+                <ScalarProperty Name="ssma_rowid" ColumnName="ssma$rowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mt_customer">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mt_customer">
+              <MappingFragment StoreEntitySet="mt_customer">
+                <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+                <ScalarProperty Name="CUST_NAME" ColumnName="CUST_NAME" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mt_prod">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mt_prod">
+              <MappingFragment StoreEntitySet="mt_prod">
+                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+                <ScalarProperty Name="PROD_NAME" ColumnName="PROD_NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mt_transaction">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mt_transaction">
+              <MappingFragment StoreEntitySet="mt_transaction">
+                <ScalarProperty Name="TRANS_ID" ColumnName="TRANS_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+                <ScalarProperty Name="TRANS_DATE" ColumnName="TRANS_DATE" />
+                <ScalarProperty Name="ITEM_AMT" ColumnName="ITEM_AMT" />
+                <ScalarProperty Name="IS_GOJEK" ColumnName="IS_GOJEK" />
+                <ScalarProperty Name="ssma_rowid" ColumnName="ssma$rowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mt_transdet">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mt_transdet">
+              <MappingFragment StoreEntitySet="mt_transdet">
+                <ScalarProperty Name="TRANS_ID" ColumnName="TRANS_ID" />
+                <ScalarProperty Name="SHOPPING_ID" ColumnName="SHOPPING_ID" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="ISDEBIT" ColumnName="ISDEBIT" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ITEM_AMT" ColumnName="ITEM_AMT" />
+                <ScalarProperty Name="IS_GOJEK" ColumnName="IS_GOJEK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
