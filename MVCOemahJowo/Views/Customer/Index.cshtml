@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Product List";
+    ViewBag.Title = "Customer List";
 }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 
@@ -35,7 +35,7 @@
             <li>
                 @Html.ActionLink("Home", "Index", "Home")
             </li>
-            <li class="active">Product</li>
+            <li class="active">Customer</li>
         </ol>
     </div>
 </div>
@@ -44,10 +44,10 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body" style="overflow-x:scroll">
-                <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;" onclick="PopupForm('@Url.Action("AddorEdit", "Product")')"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add New Data</a>
+                <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;" onclick="PopupForm('@Url.Action("AddorEdit", "Customer")')"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add New Data</a>
                 <br />
                 <br />
-                <table id="ProductListTable" class="table table-striped table-bordered table-responsive" style="font-size:9pt;width:100%">
+                <table id="CustomerListTable" class="table table-striped table-bordered table-responsive" style="font-size:9pt;width:100%">
                     <thead>
                         <tr>
                             <th width="150px"></th>
@@ -55,13 +55,17 @@
                                 Code
                             </th>
                             <th>
-                                Product
+                                Customer Name
                             </th>
                             <th>
-                                Description
+                                Phone
                             </th>
                             <th>
-                                Price
+                                Address
+                            </th>
+
+                            <th>
+                                Email
                             </th>
                             <th>
                                 Update on
@@ -85,13 +89,13 @@
 <script>
 var Popup, dataTable;
 $(document).ready(function () {
-    dataTable = $('#ProductListTable').DataTable({
+    dataTable = $('#CustomerListTable').DataTable({
         "sPaginationType": "full_numbers",
         "bJQueryUI": true,
         "bProcessing": true,
         "aLengthMenu": [[10, 50, 100, 200, -1], ["10", "50", "100", "200", "All"]],
         "ajax": {
-            "url": "/Product/GetData",
+            "url": "/Customer/GetData",
             "type": "GET",
             "datatype": "json"
         },
@@ -104,7 +108,7 @@ $(document).ready(function () {
          {
              extend: 'excel',
              text: 'Export to Excel',
-             title: 'ProductData',
+             title: 'BBS Action List',
              exportOptions: {
                  columns: ':visible'
                  //,modifier: {
@@ -120,28 +124,28 @@ $(document).ready(function () {
         "order": [[1, "asc"]],
         "columns": [
               {
-                  "data": "PROD_ID", "render": function (data) {
-                      return "<a class='btn btn-default btn-sm' onclick=PopupForm('@Url.Action("Edit", "Product")?prodid=" + data + "')><i class='fa fa-pencil'></i>Edit</a>&nbsp;&nbsp;<a class='btn btn-sm' style='background-color:#da251c;color:white;' onclick=Delete('@Url.Action("Delete", "Product")?prodid=" + data + "')><i class='fa fa-trash'></i>delete</a>"
+                  "data": "CUST_ID", "render": function (data) {
+                      return "<a class='btn btn-default btn-sm' onclick=PopupForm('@Url.Action("Edit", "Customer")?custid=" + data + "')><i class='fa fa-pencil'></i>Edit</a>&nbsp;&nbsp;<a class='btn btn-sm' style='background-color:#da251c;color:white;' onclick=Delete('@Url.Action("Delete", "Customer")?custid=" + data + "')><i class='fa fa-trash'></i>delete</a>"
                   }, "orderable": false,
                   "searchable": false
               },
-                       { "data": "PROD_ID" },
-                       { "data": "PROD_NAME" },
-                       { "data": "DESCRIPTION" },
-                       { "data": "PRICE" },
+            { "data": "CUST_ID" },
+            { "data": "CUST_NAME" },
+            { "data": "PHONE" },
+            { "data": "EMAIL" },
+            { "data": "ADDRESS" },
+            {
+                "data": "UPDATE_DATE", "render": function (data) {
+                    var dateString = data.substr(6);
+                    var currentTime = new Date(parseInt(dateString));
+                    var month = currentTime.getMonth() + 1;
+                    var day = currentTime.getDate();
+                    var year = currentTime.getFullYear();
+                    var date = day + "/" + month + "/" + year;
 
-                       {
-                           "data": "UPDATE_DATE", "render": function (data) {
-                               var dateString = data.substr(6);
-                               var currentTime = new Date(parseInt(dateString));
-                               var month = currentTime.getMonth() + 1;
-                               var day = currentTime.getDate();
-                               var year = currentTime.getFullYear();
-                               var date = day + "/" + month + "/" + year;
-
-                               return "<label>" + date + "</label>"
-                           }
-                       },
+                    return "<label>" + date + "</label>"
+                }
+            },
             { "data": "UPDATE_USER" },
             {
                 "data": "ENTRY_DATE", "render": function (data) {
@@ -156,8 +160,6 @@ $(document).ready(function () {
                 }
             },
             { "data": "ENTRY_USER" }
-
-
         ]
     });
 });
@@ -170,7 +172,7 @@ $(document).ready(function () {
              resizable: false,
              title: 'Fill information below',
              color: 'red',
-             height: 410,
+             height: 480,
              width: 300,
              close: function () {
                  Popup.dialog('destroy').remove();
@@ -199,6 +201,8 @@ $(document).ready(function () {
      }
  }
  function SubmitForm(form) {
+     console.log("valid: " + form);
+
      $.validator.unobtrusive.parse(form);
      if ($(form).valid()) {
          $.ajax({

@@ -1,0 +1,49 @@
+﻿
+@model MVCOemahJowo.Models.mt_customer
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("Update", "Customer", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    <div class="form-group">
+        @Html.Label("ID#")
+        @Html.EditorFor(model => model.CUST_ID, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+        @Html.ValidationMessageFor(model => model.CUST_ID)
+    </div>
+    <div class="form-group">
+        @Html.Label("Customer name: ")
+        @Html.EditorFor(model => model.CUST_NAME, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CUST_NAME)
+    </div>
+    <div class="form-group">
+        @Html.Label("Phone: ")
+        @Html.EditorFor(model => model.PHONE, new { htmlAttributes = new { @class = "form-control", data_mask = "0000-000000000" } })
+        @Html.ValidationMessageFor(model => model.PHONE)
+    </div>
+    <div class="form-group">
+        @Html.Label("Address: ")
+        @Html.EditorFor(model => model.ADDRESS, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ADDRESS)
+    </div>
+    <div class="form-group">
+        @Html.Label("EMAIL: ")
+        @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.EMAIL)
+    </div>
+    @*<div class="form-group">
+            @Html.Label("Parent Action List")
+            <br />
+            @Html.DropDownListFor(model => model.PARENT_NUMBER, new SelectList(Model.ParentActionList, "LSR_NUMBER", "ACTIONLIST_DESC"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+        </div>*@
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="reset" value="Reset" class="btn btn-warning" />
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        debugger;
+        //$('#PHONE').mask('0000-0000000000');
+        $('#PHONE').mask('(9999)-9999999999', { autoclear: false });
+    });
+</script>

@@ -3,31 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MVCOemahJowo.Models;
-using System.Data;
 using System.Data.Entity;
+using MVCOemahJowo.Models;
 using DocumentFormat.OpenXml.Office2010.Excel;
 
-namespace MVCOemahJowo.Controllers.ProductMaster
+namespace MVCOemahJowo.Controllers.CustomerMaster
 {
-    public class ProductController : Controller
+    public class CustomerController : Controller
     {
         private oemahjowodbEntities db = new oemahjowodbEntities();
-
-        // GET: Product
+        // GET: Customer
         public ActionResult Index()
         {
-            var id = Session["id"];
-            if(id == null)
-            {
-                return RedirectToAction("Index", "Login");
-
-            }
-            else
-            {
-                return View();
-            }
-
+            return View();
         }
         public ActionResult GetData()
         {
@@ -39,10 +27,19 @@ namespace MVCOemahJowo.Controllers.ProductMaster
             }
             else
             {
-                List<mt_prod> prodDt = db.mt_prod.ToList().Select(dt => new mt_prod { PROD_ID = dt.PROD_ID, 
-                    PROD_NAME = dt.PROD_NAME, DESCRIPTION = dt.DESCRIPTION, PRICE = dt.PRICE, ENTRY_USER = dt.ENTRY_USER, ENTRY_DATE = dt.ENTRY_DATE,
-                    UPDATE_DATE = dt.UPDATE_DATE, UPDATE_USER = dt.UPDATE_USER}).ToList<mt_prod>();
-                return Json(new { data = prodDt }, JsonRequestBehavior.AllowGet);
+                List<mt_customer> custDt = db.mt_customer.ToList().Select(dt => new mt_customer
+                {
+                    CUST_ID = dt.CUST_ID,
+                    CUST_NAME = dt.CUST_NAME,
+                    PHONE = dt.PHONE,
+                    ADDRESS = dt.ADDRESS,
+                    EMAIL = dt.EMAIL,
+                    ENTRY_USER = dt.ENTRY_USER,
+                    ENTRY_DATE = dt.ENTRY_DATE,
+                    UPDATE_DATE = dt.UPDATE_DATE,
+                    UPDATE_USER = dt.UPDATE_USER
+                }).ToList<mt_customer>();
+                return Json(new { data = custDt }, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]
@@ -59,9 +56,7 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                 return View();
             }
         }
-        //GET: /BBSActionList/Edit
-        //NB: Edit popup is being separated for the time being
-        public ActionResult Edit(string prodid)
+        public ActionResult Edit(string custid)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -71,20 +66,19 @@ namespace MVCOemahJowo.Controllers.ProductMaster
             }
             else
             {
-                prodid = Request.QueryString["prodid"];
-                int ids = Convert.ToInt32(prodid);
+                custid = Request.QueryString["custid"];
+                int ids = Convert.ToInt32(custid);
                 using (db)
                 {
-                    
-                    var formDt = db.mt_prod.Where(x => x.PROD_ID == ids).FirstOrDefault<mt_prod>();
+
+                    var formDt = db.mt_customer.Where(x => x.CUST_ID == ids).FirstOrDefault<mt_customer>();
                     return View(formDt);
                 }
             }
         }
-
         [HttpPost]
         //POST: Insert to database logic
-        public ActionResult Insert(mt_prod prodDt)
+        public ActionResult Insert(mt_customer custDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -94,41 +88,45 @@ namespace MVCOemahJowo.Controllers.ProductMaster
             }
             else
             {
-                mt_prod dt;
 
                 var editmode = Request.QueryString["editmode"];
                 var username = User.Identity.Name;
-                prodDt.ENTRY_DATE = DateTime.Now;
-                prodDt.ENTRY_USER = userobject.ToString();
-                prodDt.UPDATE_DATE = DateTime.Now;
-                prodDt.UPDATE_USER = userobject.ToString();
+                custDt.ENTRY_DATE = DateTime.Now;
+                custDt.ENTRY_USER = userobject.ToString();
+                custDt.UPDATE_DATE = DateTime.Now;
+                custDt.UPDATE_USER = userobject.ToString();
                 var dtname = username;
 
                 using (db)
                 {
+                    //dt = db.PEKAONLINE_ACTIONLIST.Where(x => x.LSR_NUMBER == actionListDt.LSR_NUMBER).FirstOrDefault<PEKAONLINE_ACTIONLIST>();
+                    //if (dt == null)
+                    //{
+
+                    //    db.Dispose();
+                    //}
+                    //else
+                    //{
+                    //    db.Dispose();
+                    //    return Json(new { success = false, message = "Duplicate Entry" }, JsonRequestBehavior.AllowGet);
+                    //}
                     try
                     {
-                        db.mt_prod.Add(prodDt);
+                        db.mt_customer.Add(custDt);
                         db.SaveChanges();
                         return Json(new { success = true, message = "Saved successfully" }, JsonRequestBehavior.AllowGet);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         return Json(new { success = false, message = e.InnerException.Message }, JsonRequestBehavior.AllowGet);
-
                     }
 
                 }
-
-
-
             }
-
         }
-
         [HttpPost]
         //POST: Update to database logic
-        public ActionResult Update(mt_prod prodDt)
+        public ActionResult Update(mt_customer custDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -141,17 +139,18 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                 var editmode = Request.QueryString["editmode"];
                 var username = User.Identity.Name;
 
-                prodDt.UPDATE_DATE = DateTime.Now;
-                prodDt.UPDATE_USER = userobject.ToString();
+                custDt.UPDATE_DATE = DateTime.Now;
+                custDt.UPDATE_USER = userobject.ToString();
                 using (db)
                 {
-                    var id = prodDt.PROD_ID;
-                    var dtfromdb = db.mt_prod.Find(id);
-                    dtfromdb.PROD_NAME = prodDt.PROD_NAME;
-                    dtfromdb.DESCRIPTION = prodDt.DESCRIPTION;
-                    dtfromdb.PRICE = prodDt.PRICE;
-                    dtfromdb.UPDATE_DATE = prodDt.UPDATE_DATE;
-                    dtfromdb.UPDATE_USER = prodDt.UPDATE_USER;
+                    var id = custDt.CUST_ID;
+                    var dtfromdb = db.mt_customer.Find(id);
+                    dtfromdb.CUST_NAME = custDt.CUST_NAME;
+                    dtfromdb.PHONE = custDt.PHONE;
+                    dtfromdb.ADDRESS = custDt.ADDRESS;
+                    dtfromdb.EMAIL = custDt.EMAIL;
+                    dtfromdb.UPDATE_DATE = custDt.UPDATE_DATE;
+                    dtfromdb.UPDATE_USER = custDt.UPDATE_USER;
                     try
                     {
                         db.Entry(dtfromdb).State = EntityState.Modified;
@@ -165,10 +164,9 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                 }
             }
         }
-
         [HttpPost]
         //POST: delete from database logic
-        public ActionResult Delete(string prodid)
+        public ActionResult Delete(string custid)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -178,14 +176,14 @@ namespace MVCOemahJowo.Controllers.ProductMaster
             }
             else
             {
-                prodid = Request.QueryString["prodid"];
-                int ids = Convert.ToInt32(prodid);
+                custid = Request.QueryString["custid"];
+                int ids = Convert.ToInt32(custid);
                 using (db)
                 {
-                    mt_prod prodDt = db.mt_prod.Where(x => x.PROD_ID == ids).FirstOrDefault<mt_prod>();
+                    mt_customer custDt = db.mt_customer.Where(x => x.CUST_ID == ids).FirstOrDefault<mt_customer>();
                     try
                     {
-                        db.mt_prod.Remove(prodDt);
+                        db.mt_customer.Remove(custDt);
                         db.SaveChanges();
                         return Json(new { success = true, message = "Deleted successfully" }, JsonRequestBehavior.AllowGet);
                     }
