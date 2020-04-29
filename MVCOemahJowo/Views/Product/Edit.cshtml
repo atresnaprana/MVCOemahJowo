@@ -1,0 +1,33 @@
+﻿@model MVCOemahJowo.Models.mt_prod
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Update", "Product", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    <div class="form-group">
+        @Html.Label("ID#")
+        @Html.EditorFor(model => model.PROD_ID, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+        @Html.ValidationMessageFor(model => model.PROD_ID)
+    </div>
+    <div class="form-group">
+        @Html.Label("Product name: ")
+        @Html.EditorFor(model => model.PROD_NAME, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PROD_NAME)
+    </div>
+    <div class="form-group">
+        @Html.Label("Description: ")
+        @Html.EditorFor(model => model.DESCRIPTION, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.DESCRIPTION)
+    </div>
+    <div class="form-group">
+        @Html.Label("Price: ")
+        @Html.EditorFor(model => model.PRICE, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+        @Html.ValidationMessageFor(model => model.PRICE)
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="reset" value="Reset" class="btn btn-warning" />
+    </div>
+}

@@ -11,7 +11,8 @@ namespace MVCOemahJowo.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     public partial class mt_prod
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,6 +24,7 @@ namespace MVCOemahJowo.Models
         public int PROD_ID { get; set; }
         public string PROD_NAME { get; set; }
         public string DESCRIPTION { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
         public double PRICE { get; set; }
         public System.DateTime ENTRY_DATE { get; set; }
         public string ENTRY_USER { get; set; }

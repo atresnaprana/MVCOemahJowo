@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewBag.Title = "Product List";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+
+<style>
+    .select2-close-mask {
+        z-index: 2099;
+    }
+
+    .select2-dropdown {
+        z-index: 3051;
+    }
+
+    .modal-header {
+        color: #ffffff;
+        background-color: #da251c;
+        border-color: #ebccd1;
+    }
+
+    .ui-widget-header {
+        background-image: none;
+        background-color: #da251c;
+        color: white;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        <!--<h1 class="page-header">
+            BBS Action List
+        </h1>-->
+        <br />
+        <ol class="breadcrumb">
+            <li>
+                @Html.ActionLink("Home", "Index", "Home")
+            </li>
+            <li class="active">Product</li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body" style="overflow-x:scroll">
+                <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;" onclick="PopupForm('@Url.Action("AddorEdit", "Product")')"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add New Data</a>
+                <br />
+                <br />
+                <table id="ProductListTable" class="table table-striped table-bordered table-responsive" style="font-size:9pt;width:100%">
+                    <thead>
+                        <tr>
+                            <th width="150px"></th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                Update on
+                            </th>
+                            <th>
+                                Update by
+                            </th>
+                            <th>
+                                Entry on
+                            </th>
+                            <th>
+                                Entry by
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var Popup, dataTable;
+$(document).ready(function () {
+    dataTable = $('#ProductListTable').DataTable({
+        "sPaginationType": "full_numbers",
+        "bJQueryUI": true,
+        "bProcessing": true,
+        "aLengthMenu": [[10, 50, 100, 200, -1], ["10", "50", "100", "200", "All"]],
+        "ajax": {
+            "url": "/Product/GetData",
+            "type": "GET",
+            "datatype": "json"
+        },
+        "stateSave": true,
+        dom: "<'row'<'col-sm-12'B>>" +
+                 "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                 "<'row'<'col-sm-12'tr>>" +
+                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        buttons: [
+         {
+             extend: 'excel',
+             text: 'Export to Excel',
+             title: 'BBS Action List',
+             exportOptions: {
+                 columns: ':visible'
+                 //,modifier: {
+                 //    page: 'current'
+                 //}
+             }
+         }
+        ],
+        "columnDefs": [{
+            "className": "dt-center",
+            "targets": [0, 1, 3, 4]
+        }],
+        "order": [[1, "asc"]],
+        "columns": [
+              {
+                  "data": "PROD_ID", "render": function (data) {
+                      return "<a class='btn btn-default btn-sm' onclick=PopupForm('@Url.Action("Edit", "Product")?prodid=" + data + "')><i class='fa fa-pencil'></i>Edit</a>&nbsp;&nbsp;<a class='btn btn-sm' style='background-color:#da251c;color:white;' onclick=Delete('@Url.Action("Delete", "Product")?prodid=" + data + "')><i class='fa fa-trash'></i>delete</a>"
+                  }, "orderable": false,
+                  "searchable": false
+              },
+                       { "data": "PROD_ID" },
+                       { "data": "PROD_NAME" },
+                       { "data": "DESCRIPTION" },
+                       { "data": "PRICE" },
+
+                       {
+                           "data": "UPDATE_DATE", "render": function (data) {
+                               var dateString = data.substr(6);
+                               var currentTime = new Date(parseInt(dateString));
+                               var month = currentTime.getMonth() + 1;
+                               var day = currentTime.getDate();
+                               var year = currentTime.getFullYear();
+                               var date = day + "/" + month + "/" + year;
+
+                               return "<label>" + date + "</label>"
+                           }
+                       },
+            { "data": "UPDATE_USER" },
+            {
+                "data": "ENTRY_DATE", "render": function (data) {
+                    var dateString = data.substr(6);
+                    var currentTime = new Date(parseInt(dateString));
+                    var month = currentTime.getMonth() + 1;
+                    var day = currentTime.getDate();
+                    var year = currentTime.getFullYear();
+                    var date = day + "/" + month + "/" + year;
+
+                    return "<label>" + date + "</label>"
+                }
+            },
+            { "data": "ENTRY_USER" }
+
+
+        ]
+    });
+});
+ function PopupForm(url) {
+     var formDiv = $('<div/>');
+     $.get(url).done(function (response) {
+         formDiv.html(response);
+         Popup = formDiv.dialog({
+             autoOpen: true,
+             resizable: false,
+             title: 'Fill information below',
+             color: 'red',
+             height: 350,
+             width: 300,
+             close: function () {
+                 Popup.dialog('destroy').remove();
+             }
+         });
+     });
+ }
+ function Delete(link) {
+     if (confirm('Are you sure to delete this record?')) {
+         $.ajax({
+             type: "POST",
+             url: link,
+             success: function (data) {
+                 if (data.success) {
+                     dataTable.ajax.reload();
+                     $.notify(data.message, {
+                         globalPosition: "top center",
+                         className: "success"
+                     });
+                 }
+             }
+
+         });
+     } else {
+         return false;
+     }
+ }
+ function SubmitForm(form) {
+     debugger;
+     console.log("valid: " + form);
+
+     $.validator.unobtrusive.parse(form);
+     if ($(form).valid()) {
+         $.ajax({
+             type: "POST",
+             url: form.action,
+             data: $(form).serialize(),
+             success: function (data) {
+                 if (data.success) {
+                     Popup.dialog('close');
+                     dataTable.ajax.reload();
+                     $.notify(data.message, {
+                         globalPosition: "top center",
+                         className: "success"
+                     });
+                 } else {
+                     $.notify(data.message, {
+                         globalPosition: "top center",
+                         className: "error"
+                     });
+                 }
+             }
+         });
+     }
+
+     return false;
+ }
+</script>
+

@@ -64,6 +64,7 @@ namespace MVCOemahJowo.Controllers.Login
             if(userdt.USER_PASS == pass)
             {
                 Session["id"] = username;
+                
                 return RedirectToAction("index", "Home");
             }
             else
