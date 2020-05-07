@@ -1,0 +1,42 @@
+﻿
+@model MVCOemahJowo.Models.mg_shoplist
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("Insert", "Cost", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    <div class="form-group">
+        @Html.Label("ID#")
+        @Html.Editor("costid", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+    </div>
+    <div class="form-group">
+        @Html.Label("Notes: ")
+        @Html.EditorFor(model => model.NOTES, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.NOTES)
+    </div>
+    <div class="form-group">
+        @Html.Label("Transaction date: ")
+        @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TRANS_DATE)
+    </div>
+    <div class="form-group">
+        @Html.Label("Amount: ")
+        @Html.EditorFor(model => model.AMOUNT, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+        @Html.ValidationMessageFor(model => model.AMOUNT)
+    </div>
+    @*<div class="form-group">
+            @Html.Label("Parent Action List")
+            <br />
+            @Html.DropDownListFor(model => model.PARENT_NUMBER, new SelectList(Model.ParentActionList, "LSR_NUMBER", "ACTIONLIST_DESC"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+        </div>*@
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="reset" value="Reset" class="btn btn-warning" />
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        //$('#PHONE').mask('0000-0000000000');
+        $('#TRANS_DATE').datepicker();
+    });
+</script>

@@ -1,0 +1,212 @@
+﻿
+@model MVCOemahJowo.Models.OemahJowoClass
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("Insert", "Transaction", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    <table>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.Label("ID#")
+                    @Html.Editor("transid", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                </div>
+            </td>
+            <td width="50px"></td>
+            
+            <td>
+                <div class="form-group">
+                    @Html.Label("Product: ")
+                    <br />
+                    @Html.DropDownListFor(model => model.PROD_ID, new SelectList(Model.prodDD, "PROD_ID", "PROD_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.Label("Transaction Date: ")
+                    @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TRANS_DATE)
+                </div>
+            </td>
+            <td width="50px"></td>
+            <td>
+                <div class="form-group">
+                    @Html.Label("Item Amount: ")
+                    @Html.EditorFor(model => model.ITEM_AMT, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                    @Html.ValidationMessageFor(model => model.ITEM_AMT)
+                </div>
+            </td>
+           
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.Label("Description: ")
+                    @Html.EditorFor(model => model.DESCRIPTION, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DESCRIPTION)
+                </div>
+            </td>
+            <td width="50px"></td>
+            <td>
+                <div class="form-check">
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("Is Online: ")
+
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.IS_ONLINE, new { htmlAttributes = new { @class = "form-check-input" } })
+                                @Html.ValidationMessageFor(model => model.IS_ONLINE)
+                            </td>
+                        </tr>
+                    </table>
+                
+                </div>
+            </td>
+
+
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.Label("Customer")
+                    <br />
+                    @Html.DropDownListFor(model => model.CUST_ID, new SelectList(Model.custDD, "CUST_ID", "CUST_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </td>
+            <td width="50px"></td>
+            <td>
+                <div class="form-group">
+                    @Html.Label("Price: ")
+                    @Html.EditorFor(model => model.PRICE, new { htmlAttributes = new { @class = "form-control", @type = "number", @readonly= "true" } })
+                    @Html.ValidationMessageFor(model => model.PRICE)
+                </div>
+            </td>
+
+        </tr>
+    </table>
+    
+   
+    
+   
+    
+    
+   
+   
+    @*<div class="form-group">
+            @Html.Label("Parent Action List")
+            <br />
+            @Html.DropDownListFor(model => model.PARENT_NUMBER, new SelectList(Model.ParentActionList, "LSR_NUMBER", "ACTIONLIST_DESC"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+        </div>*@
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="reset" value="Reset" class="btn btn-warning" />
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        //$('#PHONE').mask('0000-0000000000');
+        $('#TRANS_DATE').datepicker();
+        $('#PROD_ID').select2({ width: 'resolve' });
+        $('#CUST_ID').select2({ width: 'resolve' });
+
+    });
+    $("#IS_ONLINE").click(function () {
+        var prodid = $("#PROD_ID").val();
+        var getPrice = function () {
+            var tmp = null;
+            $.ajax({
+                'async': false,
+                'type': "POST",
+                'global': false,
+                'dataType': 'html',
+                'url': "/Transaction/GetProdPrice?prodid=" + prodid,
+                'data': { 'request': "", 'target': 'arrange_url', 'method': 'method_target' },
+                'success': function (data) {
+                    tmp = data;
+                }
+            });
+            return tmp;
+        }();
+
+        var dtjson = JSON.parse(getPrice);
+        var value = dtjson.data;
+        var itemamt = $('#ITEM_AMT').val();
+        var finalprice = 0;
+        var finalprice2 = 0;
+        if ($(this).is(":checked")) {
+            finalprice = (itemamt * value) * 0.8;
+
+        } else {
+            finalprice = itemamt * value;
+
+        }
+        $('#PRICE').val(finalprice);
+      
+    });
+    $('#ITEM_AMT').change(function () {
+        var prodid = $("#PROD_ID").val();
+        var getPrice = function () {
+            var tmp = null;
+            $.ajax({
+                'async': false,
+                'type': "POST",
+                'global': false,
+                'dataType': 'html',
+                'url': "/Transaction/GetProdPrice?prodid=" + prodid,
+                'data': { 'request': "", 'target': 'arrange_url', 'method': 'method_target' },
+                'success': function (data) {
+                    tmp = data;
+                }
+            });
+            return tmp;
+        }();
+
+        var dtjson = JSON.parse(getPrice);
+        var value = dtjson.data;
+        var itemamt = this.value;
+        var finalprice = 0;
+        var finalprice2 = 0;
+        if ($("#IS_ONLINE").is(":checked")) {
+            finalprice = (itemamt * value) * 0.8;  
+        } else {
+            finalprice = itemamt * value;
+        }
+        $('#PRICE').val(finalprice);
+    });
+    $('#PROD_ID').change(function () {
+        var prodid = this.value;
+        var getPrice = function () {
+            var tmp = null;
+            $.ajax({
+                'async': false,
+                'type': "POST",
+                'global': false,
+                'dataType': 'html',
+                'url': "/Transaction/GetProdPrice?prodid=" + prodid,
+                'data': { 'request': "", 'target': 'arrange_url', 'method': 'method_target' },
+                'success': function (data) {
+                    tmp = data;
+                }
+            });
+            return tmp;
+        }();
+
+        var dtjson = JSON.parse(getPrice);
+        var value = dtjson.data;
+        var itemamt = $('#ITEM_AMT').val();
+        var finalprice = 0;
+        var finalprice2 = 0;
+        if ($("#IS_ONLINE").is(":checked")) {
+            finalprice = (itemamt * value) * 0.8;
+        } else {
+            finalprice = itemamt * value;
+        }
+        $('#PRICE').val(finalprice);
+    });
+</script>
+

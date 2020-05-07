@@ -69,14 +69,14 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Transaction List", "Index", "Transaction")</li>
                     <li class="dropdown">
                         <a class="dropbtn" href="#">Master General</a>
                         <div class="dropdown-content">
 
                             <a href="#">@Html.ActionLink("Product", "Index", "Product")</a>
                             <a href="#">@Html.ActionLink("Customer", "Index", "Customer")</a>
-                            <a href="#">Link 3</a>
+                            <a href="#">@Html.ActionLink("Cost", "Index", "Cost")</a>
                         </div>
                     </li>
 
@@ -99,12 +99,13 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
+    <script src="~/Scripts/select2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/select2.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
 
 
