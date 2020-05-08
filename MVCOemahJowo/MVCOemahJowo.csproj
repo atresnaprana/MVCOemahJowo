@@ -269,6 +269,7 @@
     <Content Include="Views\Cost\Edit.cshtml" />
     <Content Include="Views\Transaction\Index.cshtml" />
     <Content Include="Views\Transaction\AddorEdit.cshtml" />
+    <Content Include="Views\Transaction\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

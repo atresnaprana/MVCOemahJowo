@@ -90,6 +90,50 @@ namespace MVCOemahJowo.Controllers.TransactionMaster
                 return Json(new { data = price }, JsonRequestBehavior.AllowGet);
             }
         }
+        private bool isgojekreturn(string isgojek)
+        {
+            bool stats = false;
+            if(isgojek == "Y")
+            {
+                stats = true;
+            }
+            return stats;
+        }
+        public ActionResult Edit(string transid)
+        {
+            var userobject = Session["id"];
+            if (userobject == null)
+            {
+                return RedirectToAction("Index", "Login");
+
+            }
+            else
+            {
+                transid = Request.QueryString["transid"];
+                int ids = Convert.ToInt32(transid);
+                using (db)
+                {
+                    var dtProd = db.mt_prod.OrderBy(y => y.PROD_NAME).ToList();
+                    var dtCust = db.mt_customer.OrderBy(y => y.CUST_NAME).ToList();
+                    var formfield = db.mt_transaction.Where(x => x.TRANS_ID == ids).ToList().Select(dt => new OemahJowoClass { 
+                        TRANS_ID = dt.TRANS_ID, 
+                        DESCRIPTION = dt.DESCRIPTION,
+                        TRANS_DATE = dt.TRANS_DATE,
+                        PROD_ID = dt.PROD_ID,
+                        CUST_ID = dt.CUST_ID,
+                        PRICE = dt.PRICE,
+                        ITEM_AMT = dt.ITEM_AMT,
+                        IS_GOJEK = dt.IS_GOJEK,
+                        custDD = dtCust,
+                        prodDD = dtProd,
+                        IS_ONLINE = isgojekreturn(dt.IS_GOJEK)
+                    }).FirstOrDefault();
+                    return View(formfield);
+                }
+            }
+        }
+
+        [HttpPost]
         public ActionResult Insert(OemahJowoClass transDt)
         {
             var userobject = Session["id"];
@@ -147,6 +191,59 @@ namespace MVCOemahJowo.Controllers.TransactionMaster
 
             }
 
+        }
+
+        [HttpPost]
+        //POST: Update to database logic
+        public ActionResult Update(OemahJowoClass transDt)
+        {
+            var userobject = Session["id"];
+            if (userobject == null)
+            {
+                return RedirectToAction("Index", "Login");
+
+            }
+            else
+            {
+                var editmode = Request.QueryString["editmode"];
+                transDt.TRANS_DATE = Convert.ToDateTime(transDt.TRANS_DATE.ToString("MM/dd/yyyy"));
+                var username = User.Identity.Name;
+                transDt.UPDATE_DATE = DateTime.Now;
+                transDt.UPDATE_USER = userobject.ToString();
+                var dtname = username;
+                using (db)
+                {
+                    var id = transDt.TRANS_ID;
+                    var transfield = db.mt_transaction.Find(id);
+                    transfield.TRANS_DATE = transDt.TRANS_DATE;
+                    transfield.PROD_ID = transDt.PROD_ID;
+                    transfield.DESCRIPTION = transDt.DESCRIPTION;
+                    transfield.CUST_ID = transDt.CUST_ID;
+                    transfield.ITEM_AMT = transDt.ITEM_AMT;
+                    transfield.PRICE = transDt.PRICE;
+                    if (transDt.IS_ONLINE)
+                    {
+                        transfield.IS_GOJEK = "Y";
+                    }
+                    else
+                    {
+                        transfield.IS_GOJEK = "N";
+                    }
+                    transfield.UPDATE_DATE = transDt.UPDATE_DATE;
+                    transfield.UPDATE_USER = transDt.UPDATE_USER;
+                
+                    try
+                    {
+                        db.Entry(transfield).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return Json(new { success = true, message = "Updated successfully" }, JsonRequestBehavior.AllowGet);
+                    }
+                    catch (Exception e)
+                    {
+                        return Json(new { success = false, message = e.InnerException.Message }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
         }
         [HttpPost]
         //POST: delete from database logic
