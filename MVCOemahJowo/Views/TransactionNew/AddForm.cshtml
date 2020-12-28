@@ -1,0 +1,107 @@
+﻿@model MVCOemahJowo.Models.OemahJowoClass
+@using MVCOemahJowo.Models;
+
+@{
+    ViewBag.Title = "AddForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add Transaction</h2>
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Transaction Date</label>
+        @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TRANS_DATE)
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Description</label>
+        @Html.EditorFor(model => model.DESCRIPTION, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.DESCRIPTION)
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Customer</label>
+        <br />
+        @Html.DropDownListFor(model => model.CUST_ID, new SelectList(Model.custDD, "CUST_ID", "CUST_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <br />
+    @{
+        var newModel = new OemahJowoClass();
+        newModel.transDtl = new List<mt_trans_dtl>();
+    }
+    <div id='ajaxDivTrans'>
+        @Html.Partial("TransactionFormPartial", newModel)
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script>
+    window.lengthForm = 0;
+    var initialStateForm;
+    let propNameForm = "mt_trans_dtl";
+    var staticEditorsCountForm = 2;//there are two static edtitors ID and Name
+    function storeValuesForm() {
+        initialStateForm = ASPxClientUtils.GetEditorValuesInContainer(TransFormLayout.GetMainElement());
+    }
+    function restoreValuesForm(action) {
+        if (action == "remove") {
+            var currentState = ASPxClientUtils.GetEditorValuesInContainer(TransFormLayout.GetMainElement());
+            var values = Object.values(initialStateForm);
+            var i = 0;
+            Object.keys(currentState).forEach(function (key) {
+                currentState[key] = values[i];
+                i++;
+            });
+            ASPxClientUtils.SetEditorValues(currentState);
+        }
+        if (action == "add") {
+            ASPxClientUtils.SetEditorValues(initialStateForm);
+        }
+    }
+     function AddFormTrans(index) {
+         //storeValuesForm();
+        var str = "add;" + index;
+        $.ajax({
+            url: '@Url.Action("TransactionFormPartial")',
+            type: "GET",
+            success: function (data) {
+                $('#ajaxDivTrans').html(data);
+                //restoreValuesForm("add");
+            },
+            data: { command: str },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
+            }
+        });
+
+    }
+    function OnButtonClickForm(index) {
+        //storeValuesForm();
+        debugger;
+        //delete initialStateInv[propName + "[" + index + "].INV_VAL"];
+        var str = "remove;" + index;
+        //var idCtrl = "transId" + index;
+        //var SAIdsval = ASPxClientControl.GetControlCollection().GetByName(idCtrl).GetValue();
+
+        $.ajax({
+            url: '@Url.Action("TransactionFormPartial")',
+            type: "GET",
+            success: function (data) {
+                $('#ajaxDivTrans').html(data);
+                //restoreValuesForm("remove");
+            },
+            data: { command: str },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
+            }
+        });
+    }
+    $(document).ready(function () {
+        //$('#PHONE').mask('0000-0000000000');
+        $('#TRANS_DATE').datepicker();
+        $('#CUST_ID').select2({ width: 'resolve' });
+
+    });
+</script>
+
+

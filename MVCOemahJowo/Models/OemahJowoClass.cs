@@ -27,6 +27,7 @@ namespace MVCOemahJowo.Models
         public bool IS_ONLINE { get; set; }
         public List<mt_customer> custDD { get; set; }
         public List<mt_prod> prodDD { get; set; }
+        public List<mt_trans_dtl> transDtl { get; set; }
         public mt_transaction fieldEdit { get; set; }
     }
     public class TransForm

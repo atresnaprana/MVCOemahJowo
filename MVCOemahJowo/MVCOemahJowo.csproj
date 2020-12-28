@@ -151,6 +151,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\ProductMaster\ProductController.cs" />
+    <Compile Include="Controllers\TransactionMaster2\TransactionNewController.cs" />
     <Compile Include="Controllers\TransactionMaster\TransactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -279,6 +280,9 @@
     <Content Include="Views\Transaction\Index.cshtml" />
     <Content Include="Views\Transaction\AddorEdit.cshtml" />
     <Content Include="Views\Transaction\Edit.cshtml" />
+    <Content Include="Views\TransactionNew\Index.cshtml" />
+    <Content Include="Views\TransactionNew\AddForm.cshtml" />
+    <Content Include="Views\TransactionNew\TransactionFormPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
