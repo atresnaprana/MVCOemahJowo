@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Aditya\source\repos\MVCOemahJowo\MVCOemahJowo\Models\OemahJowoModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\a_tre\Source\Repos\MVCOemahJowo\MVCOemahJowo\Models\OemahJowoModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

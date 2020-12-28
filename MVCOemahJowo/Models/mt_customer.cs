@@ -18,6 +18,7 @@ namespace MVCOemahJowo.Models
         public mt_customer()
         {
             this.mt_transaction = new HashSet<mt_transaction>();
+            this.mt_trans_hdr = new HashSet<mt_trans_hdr>();
         }
     
         public int CUST_ID { get; set; }
@@ -32,5 +33,7 @@ namespace MVCOemahJowo.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mt_transaction> mt_transaction { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mt_trans_hdr> mt_trans_hdr { get; set; }
     }
 }

@@ -32,5 +32,8 @@ namespace MVCOemahJowo.Models
         public virtual DbSet<mt_prod> mt_prod { get; set; }
         public virtual DbSet<mt_transaction> mt_transaction { get; set; }
         public virtual DbSet<mt_transdet> mt_transdet { get; set; }
+        public virtual DbSet<mt_prod_cat> mt_prod_cat { get; set; }
+        public virtual DbSet<mt_trans_dtl> mt_trans_dtl { get; set; }
+        public virtual DbSet<mt_trans_hdr> mt_trans_hdr { get; set; }
     }
 }

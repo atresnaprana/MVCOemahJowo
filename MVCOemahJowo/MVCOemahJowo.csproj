@@ -170,10 +170,19 @@
     <Compile Include="Models\mt_prod.cs">
       <DependentUpon>OemahJowoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\mt_prod_cat.cs">
+      <DependentUpon>OemahJowoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\mt_transaction.cs">
       <DependentUpon>OemahJowoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\mt_transdet.cs">
+      <DependentUpon>OemahJowoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\mt_trans_dtl.cs">
+      <DependentUpon>OemahJowoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\mt_trans_hdr.cs">
       <DependentUpon>OemahJowoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OemahJowoClass.cs" />

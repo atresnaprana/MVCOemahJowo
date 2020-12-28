@@ -14,6 +14,13 @@
         <EntityTypeShape EntityType="oemahjowodbModel.mt_transdet" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="oemahjowodbModel.FK_mt_transaction_mt_customer" ManuallyRouted="false" />
         <AssociationConnector Association="oemahjowodbModel.FK_mt_transaction_mt_prod" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="oemahjowodbModel.mt_prod_cat" Width="1.5" PointX="0.75" PointY="10" />
+        <EntityTypeShape EntityType="oemahjowodbModel.mt_trans_dtl" Width="1.5" PointX="5.25" PointY="8.5" />
+        <EntityTypeShape EntityType="oemahjowodbModel.mt_trans_hdr" Width="1.5" PointX="3" PointY="9.625" />
+        <AssociationConnector Association="oemahjowodbModel.mt_trans_hdr_mt_trans_hdr_ibfk_1" />
+        <AssociationConnector Association="oemahjowodbModel.mt_prod_mt_prod_ibfk_1" />
+        <AssociationConnector Association="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_2" />
+        <AssociationConnector Association="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

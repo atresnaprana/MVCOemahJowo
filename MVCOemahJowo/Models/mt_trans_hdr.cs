@@ -12,28 +12,24 @@ namespace MVCOemahJowo.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class mt_prod
+    public partial class mt_trans_hdr
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public mt_prod()
+        public mt_trans_hdr()
         {
-            this.mt_transaction = new HashSet<mt_transaction>();
             this.mt_trans_dtl = new HashSet<mt_trans_dtl>();
         }
     
-        public int PROD_ID { get; set; }
-        public string PROD_NAME { get; set; }
+        public int TRANS_ID { get; set; }
+        public int CUST_ID { get; set; }
         public string DESCRIPTION { get; set; }
-        public double PRICE { get; set; }
+        public System.DateTime TRANS_DATE { get; set; }
         public System.DateTime ENTRY_DATE { get; set; }
         public string ENTRY_USER { get; set; }
         public System.DateTime UPDATE_DATE { get; set; }
         public string UPDATE_USER { get; set; }
-        public int prod_cat_id { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<mt_transaction> mt_transaction { get; set; }
-        public virtual mt_prod_cat mt_prod_cat { get; set; }
+        public virtual mt_customer mt_customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mt_trans_dtl> mt_trans_dtl { get; set; }
     }

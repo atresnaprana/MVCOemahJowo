@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="oemahjowodbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="oemahjowodbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="me_config">
           <Key>
             <PropertyRef Name="ID" />
@@ -69,6 +69,46 @@
           <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
           <Property Name="UPDATE_USER" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="prod_cat_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_prod_cat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category_name" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="amount" Type="int" Nullable="false" />
+          <Property Name="entry_date" Type="date" Nullable="false" />
+          <Property Name="entry_user" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="update_date" Type="date" Nullable="false" />
+          <Property Name="update_user" Type="nvarchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_trans_dtl">
+          <Key>
+            <PropertyRef Name="DTL_ID" />
+          </Key>
+          <Property Name="DTL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TRANS_ID" Type="int" Nullable="false" />
+          <Property Name="PROD_ID" Type="int" Nullable="false" />
+          <Property Name="PRICE" Type="float" Nullable="false" />
+          <Property Name="ITEM_AMT" Type="int" Nullable="false" />
+          <Property Name="IS_ONLINE" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="DISCOUNT" Type="float" Nullable="false" />
+          <Property Name="DISCOUNT_PERC" Type="float" Nullable="false" />
+          <Property Name="IS_DISCOUNT" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mt_trans_hdr">
+          <Key>
+            <PropertyRef Name="TRANS_ID" />
+          </Key>
+          <Property Name="TRANS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CUST_ID" Type="int" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TRANS_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="ENTRY_USER" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATE_USER" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="mt_transaction">
           <Key>
@@ -104,27 +144,51 @@
           <Property Name="ITEM_AMT" Type="int" Nullable="false" />
           <Property Name="IS_GOJEK" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
-        <Association Name="FK_mt_transaction_mt_customer">
-          <End Role="mt_customer" Type="Self.mt_customer" Multiplicity="1" />
-          <End Role="mt_transaction" Type="Self.mt_transaction" Multiplicity="*" />
+        <Association Name="mt_prod$mt_prod_ibfk_1">
+          <End Role="mt_prod_cat" Type="Self.mt_prod_cat" Multiplicity="1" />
+          <End Role="mt_prod" Type="Self.mt_prod" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="mt_customer">
-              <PropertyRef Name="CUST_ID" />
+            <Principal Role="mt_prod_cat">
+              <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="mt_transaction">
-              <PropertyRef Name="CUST_ID" />
+            <Dependent Role="mt_prod">
+              <PropertyRef Name="prod_cat_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_mt_transaction_mt_prod">
+        <Association Name="mt_trans_dtl$mt_trans_dtl_ibfk_1">
+          <End Role="mt_trans_hdr" Type="Self.mt_trans_hdr" Multiplicity="1" />
+          <End Role="mt_trans_dtl" Type="Self.mt_trans_dtl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_trans_hdr">
+              <PropertyRef Name="TRANS_ID" />
+            </Principal>
+            <Dependent Role="mt_trans_dtl">
+              <PropertyRef Name="TRANS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="mt_trans_dtl$mt_trans_dtl_ibfk_2">
           <End Role="mt_prod" Type="Self.mt_prod" Multiplicity="1" />
-          <End Role="mt_transaction" Type="Self.mt_transaction" Multiplicity="*" />
+          <End Role="mt_trans_dtl" Type="Self.mt_trans_dtl" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="mt_prod">
               <PropertyRef Name="PROD_ID" />
             </Principal>
-            <Dependent Role="mt_transaction">
+            <Dependent Role="mt_trans_dtl">
               <PropertyRef Name="PROD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="mt_trans_hdr$mt_trans_hdr_ibfk_1">
+          <End Role="mt_customer" Type="Self.mt_customer" Multiplicity="1" />
+          <End Role="mt_trans_hdr" Type="Self.mt_trans_hdr" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_customer">
+              <PropertyRef Name="CUST_ID" />
+            </Principal>
+            <Dependent Role="mt_trans_hdr">
+              <PropertyRef Name="CUST_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -134,19 +198,29 @@
           <EntitySet Name="mg_shoplist" EntityType="Self.mg_shoplist" Schema="oemahjowodb" store:Type="Tables" />
           <EntitySet Name="mt_customer" EntityType="Self.mt_customer" Schema="oemahjowodb" store:Type="Tables" />
           <EntitySet Name="mt_prod" EntityType="Self.mt_prod" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mt_prod_cat" EntityType="Self.mt_prod_cat" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mt_trans_dtl" EntityType="Self.mt_trans_dtl" Schema="oemahjowodb" store:Type="Tables" />
+          <EntitySet Name="mt_trans_hdr" EntityType="Self.mt_trans_hdr" Schema="oemahjowodb" store:Type="Tables" />
           <EntitySet Name="mt_transaction" EntityType="Self.mt_transaction" Schema="oemahjowodb" store:Type="Tables" />
           <EntitySet Name="mt_transdet" EntityType="Self.mt_transdet" Schema="oemahjowodb" store:Type="Tables" />
-          <AssociationSet Name="FK_mt_transaction_mt_customer" Association="Self.FK_mt_transaction_mt_customer">
-            <End Role="mt_customer" EntitySet="mt_customer" />
-            <End Role="mt_transaction" EntitySet="mt_transaction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_mt_transaction_mt_prod" Association="Self.FK_mt_transaction_mt_prod">
+          <AssociationSet Name="mt_prod$mt_prod_ibfk_1" Association="Self.mt_prod$mt_prod_ibfk_1">
+            <End Role="mt_prod_cat" EntitySet="mt_prod_cat" />
             <End Role="mt_prod" EntitySet="mt_prod" />
-            <End Role="mt_transaction" EntitySet="mt_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="mt_trans_dtl$mt_trans_dtl_ibfk_1" Association="Self.mt_trans_dtl$mt_trans_dtl_ibfk_1">
+            <End Role="mt_trans_hdr" EntitySet="mt_trans_hdr" />
+            <End Role="mt_trans_dtl" EntitySet="mt_trans_dtl" />
+          </AssociationSet>
+          <AssociationSet Name="mt_trans_dtl$mt_trans_dtl_ibfk_2" Association="Self.mt_trans_dtl$mt_trans_dtl_ibfk_2">
+            <End Role="mt_prod" EntitySet="mt_prod" />
+            <End Role="mt_trans_dtl" EntitySet="mt_trans_dtl" />
+          </AssociationSet>
+          <AssociationSet Name="mt_trans_hdr$mt_trans_hdr_ibfk_1" Association="Self.mt_trans_hdr$mt_trans_hdr_ibfk_1">
+            <End Role="mt_customer" EntitySet="mt_customer" />
+            <End Role="mt_trans_hdr" EntitySet="mt_trans_hdr" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="oemahjowodbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -202,6 +276,7 @@
           <Property Name="PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="mt_transaction" Relationship="Self.FK_mt_transaction_mt_customer" FromRole="mt_customer" ToRole="mt_transaction" />
+          <NavigationProperty Name="mt_trans_hdr" Relationship="oemahjowodbModel.mt_trans_hdr_mt_trans_hdr_ibfk_1" FromRole="mt_customer" ToRole="mt_trans_hdr" />
         </EntityType>
         <EntityType Name="mt_prod">
           <Key>
@@ -216,6 +291,9 @@
           <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="mt_transaction" Relationship="Self.FK_mt_transaction_mt_prod" FromRole="mt_prod" ToRole="mt_transaction" />
+          <Property Name="prod_cat_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="mt_prod_cat" Relationship="oemahjowodbModel.mt_prod_mt_prod_ibfk_1" FromRole="mt_prod" ToRole="mt_prod_cat" />
+          <NavigationProperty Name="mt_trans_dtl" Relationship="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_2" FromRole="mt_prod" ToRole="mt_trans_dtl" />
         </EntityType>
         <EntityType Name="mt_transaction">
           <Key>
@@ -293,7 +371,118 @@
             <End Role="mt_prod" EntitySet="mt_prod" />
             <End Role="mt_transaction" EntitySet="mt_transaction" />
           </AssociationSet>
+          <EntitySet Name="mt_prod_cat" EntityType="oemahjowodbModel.mt_prod_cat" />
+          <EntitySet Name="mt_trans_dtl" EntityType="oemahjowodbModel.mt_trans_dtl" />
+          <EntitySet Name="mt_trans_hdr" EntityType="oemahjowodbModel.mt_trans_hdr" />
+          <AssociationSet Name="mt_trans_hdr_mt_trans_hdr_ibfk_1" Association="oemahjowodbModel.mt_trans_hdr_mt_trans_hdr_ibfk_1">
+            <End Role="mt_customer" EntitySet="mt_customer" />
+            <End Role="mt_trans_hdr" EntitySet="mt_trans_hdr" />
+          </AssociationSet>
+          <AssociationSet Name="mt_prod_mt_prod_ibfk_1" Association="oemahjowodbModel.mt_prod_mt_prod_ibfk_1">
+            <End Role="mt_prod_cat" EntitySet="mt_prod_cat" />
+            <End Role="mt_prod" EntitySet="mt_prod" />
+          </AssociationSet>
+          <AssociationSet Name="mt_trans_dtl_mt_trans_dtl_ibfk_2" Association="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_2">
+            <End Role="mt_prod" EntitySet="mt_prod" />
+            <End Role="mt_trans_dtl" EntitySet="mt_trans_dtl" />
+          </AssociationSet>
+          <AssociationSet Name="mt_trans_dtl_mt_trans_dtl_ibfk_1" Association="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_1">
+            <End Role="mt_trans_hdr" EntitySet="mt_trans_hdr" />
+            <End Role="mt_trans_dtl" EntitySet="mt_trans_dtl" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="mt_prod_cat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category_name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <Property Name="entry_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="entry_user" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="update_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="update_user" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="mt_prod" Relationship="oemahjowodbModel.mt_prod_mt_prod_ibfk_1" FromRole="mt_prod_cat" ToRole="mt_prod" />
+        </EntityType>
+        <EntityType Name="mt_trans_dtl">
+          <Key>
+            <PropertyRef Name="DTL_ID" />
+          </Key>
+          <Property Name="DTL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TRANS_ID" Type="Int32" Nullable="false" />
+          <Property Name="PROD_ID" Type="Int32" Nullable="false" />
+          <Property Name="PRICE" Type="Double" Nullable="false" />
+          <Property Name="ITEM_AMT" Type="Int32" Nullable="false" />
+          <Property Name="IS_ONLINE" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="DISCOUNT" Type="Double" Nullable="false" />
+          <Property Name="DISCOUNT_PERC" Type="Double" Nullable="false" />
+          <Property Name="IS_DISCOUNT" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="mt_prod" Relationship="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_2" FromRole="mt_trans_dtl" ToRole="mt_prod" />
+          <NavigationProperty Name="mt_trans_hdr" Relationship="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_1" FromRole="mt_trans_dtl" ToRole="mt_trans_hdr" />
+        </EntityType>
+        <EntityType Name="mt_trans_hdr">
+          <Key>
+            <PropertyRef Name="TRANS_ID" />
+          </Key>
+          <Property Name="TRANS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CUST_ID" Type="Int32" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TRANS_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="mt_customer" Relationship="oemahjowodbModel.mt_trans_hdr_mt_trans_hdr_ibfk_1" FromRole="mt_trans_hdr" ToRole="mt_customer" />
+          <NavigationProperty Name="mt_trans_dtl" Relationship="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_1" FromRole="mt_trans_hdr" ToRole="mt_trans_dtl" />
+        </EntityType>
+        <Association Name="mt_trans_hdr_mt_trans_hdr_ibfk_1">
+          <End Type="oemahjowodbModel.mt_customer" Role="mt_customer" Multiplicity="1" />
+          <End Type="oemahjowodbModel.mt_trans_hdr" Role="mt_trans_hdr" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_customer">
+              <PropertyRef Name="CUST_ID" />
+            </Principal>
+            <Dependent Role="mt_trans_hdr">
+              <PropertyRef Name="CUST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="mt_prod_mt_prod_ibfk_1">
+          <End Type="oemahjowodbModel.mt_prod_cat" Role="mt_prod_cat" Multiplicity="1" />
+          <End Type="oemahjowodbModel.mt_prod" Role="mt_prod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_prod_cat">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mt_prod">
+              <PropertyRef Name="prod_cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="mt_trans_dtl_mt_trans_dtl_ibfk_2">
+          <End Type="oemahjowodbModel.mt_prod" Role="mt_prod" Multiplicity="1" />
+          <End Type="oemahjowodbModel.mt_trans_dtl" Role="mt_trans_dtl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_prod">
+              <PropertyRef Name="PROD_ID" />
+            </Principal>
+            <Dependent Role="mt_trans_dtl">
+              <PropertyRef Name="PROD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="mt_trans_dtl_mt_trans_dtl_ibfk_1">
+          <End Type="oemahjowodbModel.mt_trans_hdr" Role="mt_trans_hdr" Multiplicity="1" />
+          <End Type="oemahjowodbModel.mt_trans_dtl" Role="mt_trans_dtl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mt_trans_hdr">
+              <PropertyRef Name="TRANS_ID" />
+            </Principal>
+            <Dependent Role="mt_trans_dtl">
+              <PropertyRef Name="TRANS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -359,6 +548,7 @@
           <EntitySetMapping Name="mt_prod">
             <EntityTypeMapping TypeName="oemahjowodbModel.mt_prod">
               <MappingFragment StoreEntitySet="mt_prod">
+                <ScalarProperty Name="prod_cat_id" ColumnName="prod_cat_id" />
                 <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
                 <ScalarProperty Name="PROD_NAME" ColumnName="PROD_NAME" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
@@ -403,6 +593,48 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ITEM_AMT" ColumnName="ITEM_AMT" />
                 <ScalarProperty Name="IS_GOJEK" ColumnName="IS_GOJEK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mt_prod_cat">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mt_prod_cat">
+              <MappingFragment StoreEntitySet="mt_prod_cat">
+                <ScalarProperty Name="update_user" ColumnName="update_user" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="entry_user" ColumnName="entry_user" />
+                <ScalarProperty Name="entry_date" ColumnName="entry_date" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="category_name" ColumnName="category_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mt_trans_dtl">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mt_trans_dtl">
+              <MappingFragment StoreEntitySet="mt_trans_dtl">
+                <ScalarProperty Name="IS_DISCOUNT" ColumnName="IS_DISCOUNT" />
+                <ScalarProperty Name="DISCOUNT_PERC" ColumnName="DISCOUNT_PERC" />
+                <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
+                <ScalarProperty Name="IS_ONLINE" ColumnName="IS_ONLINE" />
+                <ScalarProperty Name="ITEM_AMT" ColumnName="ITEM_AMT" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+                <ScalarProperty Name="TRANS_ID" ColumnName="TRANS_ID" />
+                <ScalarProperty Name="DTL_ID" ColumnName="DTL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mt_trans_hdr">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mt_trans_hdr">
+              <MappingFragment StoreEntitySet="mt_trans_hdr">
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="TRANS_DATE" ColumnName="TRANS_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+                <ScalarProperty Name="TRANS_ID" ColumnName="TRANS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
