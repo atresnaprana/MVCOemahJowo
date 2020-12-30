@@ -52,10 +52,58 @@
         .dropdown:hover .dropbtn {
             background-color: cyan;
         }
+        .navbar-custom {
+            background-color: lightgreen;
+        } 
     </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom fixed-top">
+        @Html.ActionLink("Oemah Jowo Enterprise", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    @*@Html.ActionLink("Home", "Index", "Home")*@
+                    <a class="nav-link" href="/Home/index">Home</a>
+                </li>
+                <li class="nav-item">
+                    @*@Html.ActionLink("Transaction List", "Index", "Transaction")*@
+                    <a class="nav-link" href="/Transaction/index">Transaction</a>
+                </li>
+                <li class="nav-item">
+                    @*@Html.ActionLink("Transaction List2", "Index", "TransactionNew")*@
+                    <a class="nav-link" href="/TransactionNew/index">Transaction2</a>
+
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Master data
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/Product/index">Product</a>
+                        <a class="dropdown-item" href="/Customer/index">Customer</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/Cost/index">Cost</a>
+                            @*<a href="#">@Html.ActionLink("Product", "Index", "Product")</a>
+                            <a href="#">@Html.ActionLink("Customer", "Index", "Customer")</a>
+                            <a href="#">@Html.ActionLink("Cost", "Index", "Cost")</a>*@
+                    </div>
+                </li>
+                @*<li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>*@
+            </ul>
+            @*<form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>*@
+        </div>
+    </nav>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -86,7 +134,7 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -109,7 +157,6 @@
     <link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
     <link href="~/Content/select2.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
-
 
 </body>
 </html>

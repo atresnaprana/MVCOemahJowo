@@ -33,6 +33,23 @@ namespace MVCOemahJowo.Models
         public List<mt_trans_dtl> transDtl { get; set; }
         public mt_transaction fieldEdit { get; set; }
     }
+    public class dashboardprod
+    {
+        public int prodcat_id { get; set; }
+        public string prodcat_name { get; set; }
+        public int total_sold { get; set; }
+    }
+    public class dashboardcust
+    {
+        public int cust_id { get; set; }
+        public string cust_name { get; set; }
+        public double total_purchase { get; set; }
+    }
+    public class dashboardcost
+    {
+        public string Monthyear { get; set; }
+        public double totalcost { get; set; }
+    }
     public class TransForm
     {
         public mt_transaction form { get; set; }

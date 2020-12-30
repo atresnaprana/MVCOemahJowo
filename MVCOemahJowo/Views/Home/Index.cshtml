@@ -1,27 +1,66 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<script src="~/Scripts/highcharts.js"></script>
+<script src="~/Scripts/exporting.js"></script>
+<script src="~/Scripts/export-data.js"></script>
+<script src="~/Scripts/accessibility.js"></script>
+<style type="text/css">
+    .highcharts-figure, .highcharts-data-table table {
+        min-width: 310px;
+        max-width: 800px;
+        margin: 1em auto;
+    }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+    #container {
+        height: 400px;
+    }
+
+    .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #EBEBEB;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+    }
+
+    .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+    }
+</style>
+
+<br />
+<div id="containers"></div>
+
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <div id="CustContainer"></div>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <div id="CostContainer"></div>
+
     </div>
     <div class="col-md-4">
         <h2>Web Hosting</h2>
@@ -29,3 +68,248 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var product = [];
+        var Total = [];
+        var customer = [];
+        var total_purchase = [];
+        var monthyear = [];
+        var totalcost = [];
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetProdDashboard",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    product.push(item.prodcat_name);
+                    Total.push(item.total_sold);
+                });
+                loadChart(product, Total);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });  
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetCustDashboard",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    customer.push(item.cust_name);
+                    total_purchase.push(item.total_purchase);
+                });
+                loadChartCust(customer, total_purchase);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });  
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetCostDashboard",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    monthyear.push(item.Monthyear);
+                    totalcost.push(item.totalcost);
+                });
+                loadChartCost(monthyear, totalcost);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });  
+    });
+    function loadChart(category, val2) {
+       
+        Highcharts.chart('containers', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Top 5 Product Sold'
+            },
+            subtitle: {
+                text: 'Most Popular product'
+            },
+            xAxis: {
+                categories: category,
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Population (millions)',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' millions'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Total',
+                data: val2
+            }]
+        });
+    }  
+    function loadChartCust(category, val2) {
+
+        Highcharts.chart('CustContainer', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Top 5 Customer'
+            },
+            subtitle: {
+                text: 'Most Purchase by customer'
+            },
+            xAxis: {
+                categories: category,
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Population (millions)',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' millions'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Total',
+                data: val2
+            }]
+        });
+    }  
+    function loadChartCost(category, val2) {
+
+        Highcharts.chart('CostContainer', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Last 5 Month Cost'
+            },
+            subtitle: {
+                text: 'Cost'
+            },
+            xAxis: {
+                categories: category,
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Population (millions)',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' millions'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Total',
+                data: val2
+            }]
+        });
+    }  
+   
+</script>
