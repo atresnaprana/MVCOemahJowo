@@ -1,0 +1,301 @@
+﻿@model MVCOemahJowo.Models.OemahJowoClass
+@using MVCOemahJowo.Models;
+
+@{
+    ViewBag.Title = "Edit Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Transaction</h2>
+@{
+    var newModel = new OemahJowoClass();
+    if (Model.transhdr != null)
+    {
+        newModel.transDtl = Model.transhdr.mt_trans_dtl.ToList();
+        Session["FormDtls"] = Model.transhdr.mt_trans_dtl.ToList();
+    }
+    else
+    {
+        newModel.transDtl = new List<mt_trans_dtl>();
+        Session["FormDtls"] = new List<mt_trans_dtl>();
+    }
+    var db = new oemahjowodbEntities();
+    newModel.prodDD = db.mt_prod.OrderBy(y => y.PROD_NAME).ToList();
+}
+<form id="mainform" style="border:solid; border-width:1px;">
+    <div class="row" style="padding-left:5px;">
+        @Html.HiddenFor(model => model.transhdr.TRANS_ID, new { htmlAttributes = new { @class = "form-control" } })
+
+        <div class="col-xs-3 form-group">
+            <label for="exampleInputEmail1">Transaction Date</label>
+            @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.transhdr.TRANS_DATE)
+        </div>
+        <div class="col-xs-3 form-group">
+            <label for="exampleInputPassword1">Description</label>
+            @Html.EditorFor(model => model.DESCRIPTION, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.transhdr.DESCRIPTION)
+        </div>
+        <div class="col-xs-3 form-group">
+            <label for="exampleInputPassword1">Customer</label>
+            <br />
+            @Html.DropDownListFor(model => model.CUST_ID, new SelectList(Model.custDD, "CUST_ID", "CUST_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    @*<div class="form-group">
+
+        </div>
+        <div class="form-group">
+
+        </div>
+        <div class="form-group">
+
+        </div>*@
+    <br />
+
+    <div id='ajaxDivTrans' style="padding-left:5px;">
+        @Html.Partial("TransactionFormPartial", newModel)
+    </div>
+    <br />
+
+</form>
+<div style="padding-left:5px; padding-bottom:5px;">
+    <table>
+        <tr>
+            <td>
+                <button id="submitbtn" class="btn btn-primary">Submit</button>
+            </td>
+            <td style="padding-top:6px; padding-left:5px;">
+                <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;" onclick="backfront()">Back</a>
+
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        //$('#PHONE').mask('0000-0000000000');
+        var date2 = '@Model.TRANS_DATE_STR';
+        var date = new Date(date2);
+        debugger;
+        $('#TRANS_DATE').datepicker({
+            dateFormat: 'mm-dd-yy'
+        }).datepicker('setDate', date);
+        $('#CUST_ID').select2({ width: 'resolve' });
+
+    });
+    window.lengthForm = 0;
+    var initialStateForm;
+    let propNameForm = "mt_trans_dtl";
+    var staticEditorsCountForm = 2;//there are two static edtitors ID and Name
+    function storeValuesForm() {
+        initialStateForm = ASPxClientUtils.GetEditorValuesInContainer(TransFormLayout.GetMainElement());
+    }
+    function restoreValuesForm(action) {
+        if (action == "remove") {
+            var currentState = ASPxClientUtils.GetEditorValuesInContainer(TransFormLayout.GetMainElement());
+            var values = Object.values(initialStateForm);
+            var i = 0;
+            Object.keys(currentState).forEach(function (key) {
+                currentState[key] = values[i];
+                i++;
+            });
+            ASPxClientUtils.SetEditorValues(currentState);
+        }
+        if (action == "add") {
+            ASPxClientUtils.SetEditorValues(initialStateForm);
+        }
+    }
+
+     function AddFormTrans(index) {
+         //storeValuesForm();
+        var str = "add;" + index;
+        $.ajax({
+            url: '@Url.Action("TransactionFormPartial")',
+            type: "GET",
+            success: function (data) {
+                $('#ajaxDivTrans').html(data);
+                //restoreValuesForm("add");
+            },
+            data: { command: str },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
+            }
+        });
+
+    }
+    function OnButtonClickForm(index) {
+        //storeValuesForm();
+        debugger;
+        //delete initialStateInv[propName + "[" + index + "].INV_VAL"];
+        var str = "remove;" + index;
+        //var idCtrl = "transId" + index;
+        //var SAIdsval = ASPxClientControl.GetControlCollection().GetByName(idCtrl).GetValue();
+
+        $.ajax({
+            url: '@Url.Action("TransactionFormPartial")',
+            type: "GET",
+            success: function (data) {
+                $('#ajaxDivTrans').html(data);
+                //restoreValuesForm("remove");
+            },
+            data: { command: str },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
+            }
+        });
+    }
+
+    function backfront() {
+        window.location.href = '/TransactionNew/index'
+    }
+    function getFormData() {
+
+        var date = $('#TRANS_DATE').val();
+        var pin = $('#DESCRIPTION').val();
+        var custid = $('#CUST_ID').val();
+        var formid = $('#transhdr_TRANS_ID').val();
+
+
+        var formJson = {};
+        var formList = [];
+        //HDR
+        formJson["TRANS_ID"] = formid;
+        formJson["TRANS_DATE"] = date;
+        formJson["DESCRIPTION"] = pin;
+        formJson["CUST_ID"] = custid;
+        formList.push(formJson);
+        return JSON.stringify(formList);
+    }
+    function getFormDataTrans() {
+        var getLength = function () {
+            var tmp = null;
+            $.ajax({
+                'async': false,
+                'type': "POST",
+                'global': false,
+                'dataType': 'html',
+                'url': "/TransactionNew/GetLengthTrans",
+                'data': { 'request': "", 'target': 'arrange_url', 'method': 'method_target' },
+                'success': function (data) {
+                    tmp = data;
+                }
+            });
+            return tmp;
+        }();
+        var dtjsonlength = JSON.parse(getLength);
+        var lengthval = dtjsonlength.length;
+        var formList = [];
+
+        for (var i = 0; i < lengthval; i++) {
+            var formJson = {};
+            var prodid = $("#ProdId" + i).val();
+            var dtlids = $("#dtlid" + i).val();
+            debugger;
+            var itemamt = $('#AmtTxt' + i).val();
+            var isonline = $("#isonline" + i).is(":checked");
+            var chk = "N";
+            if (isonline) {
+                chk = "Y";
+            }
+            var price = $('#PriceTxt' + i).val();
+            formJson["PROD_ID"] = prodid;
+            formJson["ITEM_AMT"] = itemamt;
+            formJson["IS_ONLINE"] = chk;
+            formJson["PRICE"] = price;
+            formJson["DTL_ID"] = dtlids;
+            formList.push(formJson);
+        }
+        return JSON.stringify(formList);
+
+    }
+    $("#submitbtn").click(function () {
+        var formHdr = getFormData();
+        var formTrans = getFormDataTrans();
+        var getReportColumnsParams = {
+            "formHdr": formHdr,
+            "formTrans": formTrans
+        };
+        $.ajax({
+            type: "POST",
+            traditional: true,
+            async: false,
+            cache: false,
+            url: '/TransactionNew/EditTrans',
+            context: document.body,
+            data: getReportColumnsParams,
+            success: function (result) {
+                var splitres = result.split("ok");
+                if (splitres.length > 1) {
+                    debugger;
+                    //alert("Form has been saved");
+                    //window.location.href = '/TransactionNew/index'
+                    location.href = '/TransactionNew/index';
+
+                }
+                if (splitres.length <= 1) {
+                    //alert(splitres[0]);
+                    //document.getElementById('errmsg').innerHTML = splitres[0];
+                    //$("#fail-alert").fadeTo(10000, 500).slideUp(500, function () {
+                    //    $("#fail-alert").slideUp(500);
+                    //});
+                    //document.getElementById('errormsg').innerHTML = splitres[0];
+                    //$('#alertpopup').modal('show');
+                    //PopupAddProyekSF.Hide();
+                }
+            },
+            error: function (xhr) {
+                //debugger;
+                console.log(xhr.responseText);
+                alert("Error has occurred..: " + xhr.responseText);
+            }
+        });
+    });
+    function SaveForm() {
+        debugger;
+        var formHdr = getFormData();
+        var formTrans = getFormDataTrans();
+        var getReportColumnsParams = {
+            "formHdr": formHdr,
+            "formTrans": formTrans
+        };
+        $.ajax({
+            type: "POST",
+            traditional: true,
+            async: false,
+            cache: false,
+            url: '/TransactionNew/EditTrans',
+            context: document.body,
+            data: getReportColumnsParams,
+            success: function (result) {
+                var splitres = result.split("ok");
+                if (splitres.length > 1) {
+                    debugger;
+                    //alert("Form has been saved");
+                    //window.location.href = '/TransactionNew/index'
+                    location.href = '/TransactionNew/index';
+
+                }
+                if (splitres.length <= 1) {
+                    //alert(splitres[0]);
+                    //document.getElementById('errmsg').innerHTML = splitres[0];
+                    //$("#fail-alert").fadeTo(10000, 500).slideUp(500, function () {
+                    //    $("#fail-alert").slideUp(500);
+                    //});
+                    //document.getElementById('errormsg').innerHTML = splitres[0];
+                    //$('#alertpopup').modal('show');
+                    //PopupAddProyekSF.Hide();
+                }
+            },
+            error: function (xhr) {
+                //debugger;
+                console.log(xhr.responseText);
+                alert("Error has occurred..: " + xhr.responseText);
+            }
+        });
+
+    }
+   
+</script>
+
+

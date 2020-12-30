@@ -19,6 +19,8 @@ namespace MVCOemahJowo.Models
         public int CUST_ID { get; set; }
         public System.DateTime ENTRY_DATE { get; set; }
         public string ENTRY_USER { get; set; }
+        public string TRANS_DATE_STR { get; set; }
+
         public System.DateTime UPDATE_DATE { get; set; }
         public string UPDATE_USER { get; set; }
         public System.DateTime TRANS_DATE { get; set; }
@@ -27,6 +29,7 @@ namespace MVCOemahJowo.Models
         public bool IS_ONLINE { get; set; }
         public List<mt_customer> custDD { get; set; }
         public List<mt_prod> prodDD { get; set; }
+        public mt_trans_hdr transhdr { get; set; }
         public List<mt_trans_dtl> transDtl { get; set; }
         public mt_transaction fieldEdit { get; set; }
     }

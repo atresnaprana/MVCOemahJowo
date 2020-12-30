@@ -96,6 +96,7 @@
           <Property Name="DISCOUNT" Type="float" Nullable="false" />
           <Property Name="DISCOUNT_PERC" Type="float" Nullable="false" />
           <Property Name="IS_DISCOUNT" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="PRICE_ORI" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="mt_trans_hdr">
           <Key>
@@ -419,6 +420,7 @@
           <Property Name="IS_DISCOUNT" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="mt_prod" Relationship="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_2" FromRole="mt_trans_dtl" ToRole="mt_prod" />
           <NavigationProperty Name="mt_trans_hdr" Relationship="oemahjowodbModel.mt_trans_dtl_mt_trans_dtl_ibfk_1" FromRole="mt_trans_dtl" ToRole="mt_trans_hdr" />
+          <Property Name="PRICE_ORI" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="mt_trans_hdr">
           <Key>
@@ -612,6 +614,7 @@
           <EntitySetMapping Name="mt_trans_dtl">
             <EntityTypeMapping TypeName="oemahjowodbModel.mt_trans_dtl">
               <MappingFragment StoreEntitySet="mt_trans_dtl">
+                <ScalarProperty Name="PRICE_ORI" ColumnName="PRICE_ORI" />
                 <ScalarProperty Name="IS_DISCOUNT" ColumnName="IS_DISCOUNT" />
                 <ScalarProperty Name="DISCOUNT_PERC" ColumnName="DISCOUNT_PERC" />
                 <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />

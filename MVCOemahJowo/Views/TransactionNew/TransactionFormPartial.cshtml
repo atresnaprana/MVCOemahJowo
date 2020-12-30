@@ -1,37 +1,72 @@
 ﻿@model MVCOemahJowo.Models.OemahJowoClass
 @using System.Web.UI.WebControls;
 
-<a class="btn" style="margin-bottom:10px;background-color:forestgreen;color:white;" onclick="AddFormTrans(@Model.transDtl.Count-1)"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add New Data</a>
+<a class="btn" style="margin-bottom:10px;background-color:forestgreen;color:white;" onclick="AddFormTrans(@Model.transDtl.Count-1)"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Product</a>
 @for (int i = 0; i < Model.transDtl.Count; i++)
 {
-    <div class="form-group">
-        <label for="exampleInputEmail1">Product</label>
+<div class="row">
+    @Html.Hidden("dtlid" + i, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="col-xs-3 form-group">
+        <label for="exampleInputEmail1">Product @(i+1)</label>
         <br />
-        @Html.DropDownList("ProdId" + i, new SelectList(Model.prodDD, "PROD_ID", "PROD_NAME"), "Select", new { htmlAttributes = new { @class = "form-control"}, @onchange = "prodchange(this, this.value, '"+i+"')" })
+        @Html.DropDownList("ProdId" + i, new SelectList(Model.prodDD, "PROD_ID", "PROD_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" }, @onchange = "prodchange(this, this.value, '" + i + "')" })
     </div>
-    <div class="form-group">
+    <div class="col-xs-3 form-group">
         <label for="exampleInputEmail1">Item Amount</label>
         <br />
         @Html.Editor("AmtTxt" + i, new { htmlAttributes = new { @class = "form-control", @type = "number", @onchange = "amtChg(this, this.value, '" + i + "')" } })
     </div>
-    <div class="form-group">
+    <div class="col-xs-1 form-group">
         @Html.Label("Is Online: ")
-        @Html.CheckBox("isonline" + i, new { htmlAttributes = new { @class = "form-check-input"}, @onclick = "onlineclick(this, '" + i + "')" })
+        <br />
+        @Html.CheckBox("isonline" + i, new { htmlAttributes = new { @class = "form-check-input" }, @onclick = "onlineclick(this, '" + i + "')" })
     </div>
-    <div class="form-group">
+    <div class="col-xs-3 form-group">
         @Html.Label("Price: ")
         @Html.Editor("PriceTxt" + i, new { htmlAttributes = new { @class = "form-control", @type = "number", @readonly = "true" } })
     </div>
-    <div class="form-group">
-        <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;" onclick="OnButtonClickForm(@i)"><i class="bi bi-arrow-up-square-fill"></i>&nbsp;&nbsp;Remove</a>
+    <div class="col-xs-2 form-group">
+        <br />
+        <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;padding-top:10px;" onclick="OnButtonClickForm(@i)"><i class="bi bi-arrow-up-square-fill"></i>&nbsp;&nbsp;Remove</a>
+
     </div>
+</div>
+    @*<div class="form-group">
+       
+    </div>
+    <div class="form-group">
+       
+    </div>
+    <div class="form-group">
+       
+    </div>
+    <div class="form-group">
+       
+    </div>
+    <div class="form-group">
+    </div>*@
 }
 <script>
     $(document).ready(function () {
+        debugger;
         //$('#PHONE').mask('0000-0000000000');
         var modelLength = @Model.transDtl.Count;
+        var models = @Html.Raw(Json.Encode(Model.transDtl.Select(a => new { a.IS_ONLINE, a.PROD_ID, a.ITEM_AMT, a.PRICE, a.DTL_ID }).ToList()));
+
         for (var i = 0; i < modelLength; i++) {
             $('#ProdId' + i).select2({ width: 'resolve' });
+        }
+        for (var i = 0; i < models.length; i++) {
+            $('#dtlid' + i).val(models[i].DTL_ID)
+            $('#ProdId' + i).val(models[i].PROD_ID)
+            $('#ProdId' + i).trigger('change'); // Notify any JS components that the value changed
+            $('#AmtTxt' + i).val(models[i].ITEM_AMT)
+            if (models[i].IS_ONLINE == "Y") {
+                $("#isonline" + i).prop('checked', true);
+            } else {
+                $("#isonline" + i).prop('checked', false);
+            }
+            $('#PriceTxt' + i).val(models[i].PRICE)
 
         }
 

@@ -23,6 +23,7 @@ namespace MVCOemahJowo.Models
         public double DISCOUNT { get; set; }
         public double DISCOUNT_PERC { get; set; }
         public string IS_DISCOUNT { get; set; }
+        public double PRICE_ORI { get; set; }
     
         public virtual mt_prod mt_prod { get; set; }
         public virtual mt_trans_hdr mt_trans_hdr { get; set; }

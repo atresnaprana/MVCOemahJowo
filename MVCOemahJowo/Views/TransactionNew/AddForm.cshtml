@@ -8,34 +8,64 @@
 
 <h2>Add Transaction</h2>
 
-<form>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Transaction Date</label>
-        @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.TRANS_DATE)
+<form id="mainform" style="border:solid; border-width:1px;">
+    <div class="row" style="padding-left:5px;">
+        <div class="col-xs-3 form-group">
+            <label for="exampleInputEmail1">Transaction Date</label>
+            @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TRANS_DATE)
+        </div>
+        <div class="col-xs-3 form-group">
+            <label for="exampleInputPassword1">Description</label>
+            @Html.EditorFor(model => model.DESCRIPTION, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DESCRIPTION)
+        </div>
+        <div class="col-xs-3 form-group">
+            <label for="exampleInputPassword1">Customer</label>
+            <br />
+            @Html.DropDownListFor(model => model.CUST_ID, new SelectList(Model.custDD, "CUST_ID", "CUST_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    @*<div class="form-group">
+       
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Description</label>
-        @Html.EditorFor(model => model.DESCRIPTION, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.DESCRIPTION)
+       
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Customer</label>
-        <br />
-        @Html.DropDownListFor(model => model.CUST_ID, new SelectList(Model.custDD, "CUST_ID", "CUST_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" } })
-    </div>
+      
+    </div>*@
     <br />
     @{
         var newModel = new OemahJowoClass();
         newModel.transDtl = new List<mt_trans_dtl>();
     }
-    <div id='ajaxDivTrans'>
+    <div id='ajaxDivTrans' style="padding-left:5px;">
         @Html.Partial("TransactionFormPartial", newModel)
     </div>
     <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
+    
 </form>
+<div style="padding-left:5px; padding-bottom:5px;">
+    <table>
+        <tr>
+            <td>
+                <button id="submitbtn" class="btn btn-primary">Submit</button>
+            </td>
+            <td style="padding-top:6px; padding-left:5px;">
+                <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;" onclick="backfront()">Back</a>
+
+            </td>
+        </tr>
+    </table>
+</div>
 <script>
+    $(document).ready(function () {
+        //$('#PHONE').mask('0000-0000000000');
+        $('#TRANS_DATE').datepicker().datepicker('setDate', null);
+        $('#CUST_ID').select2({ width: 'resolve' });
+
+    });
     window.lengthForm = 0;
     var initialStateForm;
     let propNameForm = "mt_trans_dtl";
@@ -58,6 +88,7 @@
             ASPxClientUtils.SetEditorValues(initialStateForm);
         }
     }
+    
      function AddFormTrans(index) {
          //storeValuesForm();
         var str = "add;" + index;
@@ -96,12 +127,150 @@
             }
         });
     }
-    $(document).ready(function () {
-        //$('#PHONE').mask('0000-0000000000');
-        $('#TRANS_DATE').datepicker();
-        $('#CUST_ID').select2({ width: 'resolve' });
+  
+    function backfront() {
+        window.location.href = '/TransactionNew/index'
+    }
+    function getFormData() {
 
+        var date = $('#TRANS_DATE').val();
+        var pin = $('#DESCRIPTION').val();
+        var custid = $('#CUST_ID').val();
+
+
+        var formJson = {};
+        var formList = [];
+        //HDR 
+        formJson["TRANS_DATE"] = date;
+        formJson["DESCRIPTION"] = pin;
+        formJson["CUST_ID"] = custid;
+        formList.push(formJson);
+        return JSON.stringify(formList);
+    }
+    function getFormDataTrans() {
+        var getLength = function () {
+            var tmp = null;
+            $.ajax({
+                'async': false,
+                'type': "POST",
+                'global': false,
+                'dataType': 'html',
+                'url': "/TransactionNew/GetLengthTrans",
+                'data': { 'request': "", 'target': 'arrange_url', 'method': 'method_target' },
+                'success': function (data) {
+                    tmp = data;
+                }
+            });
+            return tmp;
+        }();
+        var dtjsonlength = JSON.parse(getLength);
+        var lengthval = dtjsonlength.length;
+        var formList = [];
+
+        for (var i = 0; i < lengthval; i++) {
+            var formJson = {};
+            var prodid = $("#ProdId" + i).val();
+            var itemamt = $('#AmtTxt' + i).val();
+            var isonline = $("#isonline" + i).is(":checked");
+            var chk = "N";
+            if (isonline) {
+                chk = "Y";
+            }
+            var price = $('#PriceTxt' + i).val();
+            formJson["PROD_ID"] = prodid;
+            formJson["ITEM_AMT"] = itemamt;
+            formJson["IS_ONLINE"] = chk;
+            formJson["PRICE"] = price;
+            formList.push(formJson);
+        }
+        return JSON.stringify(formList);
+
+    }
+    function SaveForm() {
+        debugger;
+        var formHdr = getFormData();
+        var formTrans = getFormDataTrans();
+        var getReportColumnsParams = {
+            "formHdr": formHdr,
+            "formTrans": formTrans
+        };
+        $.ajax({
+            type: "POST",
+            traditional: true,
+            async: false,
+            cache: false,
+            url: '/TransactionNew/AddData',
+            context: document.body,
+            data: getReportColumnsParams,
+            success: function (result) {
+                debugger;
+
+                var splitres = result.split("ok");
+                if (splitres.length > 1) {
+                    //alert("Form has been saved");
+                    window.location = ('/TransactionNew/index').redirect;
+                }
+                if (splitres.length <= 1) {
+                    //alert(splitres[0]);
+                    //document.getElementById('errmsg').innerHTML = splitres[0];
+                    //$("#fail-alert").fadeTo(10000, 500).slideUp(500, function () {
+                    //    $("#fail-alert").slideUp(500);
+                    //});
+                    //document.getElementById('errormsg').innerHTML = splitres[0];
+                    //$('#alertpopup').modal('show');
+                    //PopupAddProyekSF.Hide();
+                }
+            },
+            error: function (xhr) {
+                //debugger;
+                console.log(xhr.responseText);
+                alert("Error has occurred..: " + xhr.responseText);
+            }
+        });
+
+    }
+    $("#submitbtn").click(function () {
+        var formHdr = getFormData();
+        var formTrans = getFormDataTrans();
+        var getReportColumnsParams = {
+            "formHdr": formHdr,
+            "formTrans": formTrans
+        };
+        $.ajax({
+            type: "POST",
+            traditional: true,
+            async: false,
+            cache: false,
+            url: '/TransactionNew/AddData',
+            context: document.body,
+            data: getReportColumnsParams,
+            success: function (result) {
+                debugger;
+
+                var splitres = result.split("ok");
+                if (splitres.length > 1) {
+                    //alert("Form has been saved");
+                    window.location = '/TransactionNew/index';
+                }
+                if (splitres.length <= 1) {
+                    //alert(splitres[0]);
+                    //document.getElementById('errmsg').innerHTML = splitres[0];
+                    //$("#fail-alert").fadeTo(10000, 500).slideUp(500, function () {
+                    //    $("#fail-alert").slideUp(500);
+                    //});
+                    //document.getElementById('errormsg').innerHTML = splitres[0];
+                    //$('#alertpopup').modal('show');
+                    //PopupAddProyekSF.Hide();
+                }
+            },
+            error: function (xhr) {
+                //debugger;
+                console.log(xhr.responseText);
+                alert("Error has occurred..: " + xhr.responseText);
+            }
+        });
     });
+
 </script>
 
 
