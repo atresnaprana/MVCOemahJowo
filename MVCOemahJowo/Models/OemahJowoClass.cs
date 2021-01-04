@@ -50,6 +50,11 @@ namespace MVCOemahJowo.Models
         public string Monthyear { get; set; }
         public double totalcost { get; set; }
     }
+    public class dashboardincome
+    {
+        public string Monthyear { get; set; }
+        public double totalincome { get; set; }
+    }
     public class TransForm
     {
         public mt_transaction form { get; set; }

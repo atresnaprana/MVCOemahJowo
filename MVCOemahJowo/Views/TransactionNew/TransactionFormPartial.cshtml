@@ -6,26 +6,26 @@
 {
 <div class="row">
     @Html.Hidden("dtlid" + i, new { htmlAttributes = new { @class = "form-control" } })
-    <div class="col-xs-3 form-group">
+    <div class="col-xs-3 form-group" style="padding-left:2%">
         <label for="exampleInputEmail1">Product @(i+1)</label>
         <br />
         @Html.DropDownList("ProdId" + i, new SelectList(Model.prodDD, "PROD_ID", "PROD_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" }, @onchange = "prodchange(this, this.value, '" + i + "')" })
     </div>
-    <div class="col-xs-3 form-group">
+    <div class="col-xs-3 form-group" style="padding-left:1%">
         <label for="exampleInputEmail1">Item Amount</label>
         <br />
         @Html.Editor("AmtTxt" + i, new { htmlAttributes = new { @class = "form-control", @type = "number", @onchange = "amtChg(this, this.value, '" + i + "')" } })
     </div>
-    <div class="col-xs-1 form-group">
+    <div class="col-xs-1 form-group" style="padding-left:1%;">
         @Html.Label("Is Online: ")
         <br />
         @Html.CheckBox("isonline" + i, new { htmlAttributes = new { @class = "form-check-input" }, @onclick = "onlineclick(this, '" + i + "')" })
     </div>
-    <div class="col-xs-3 form-group">
+    <div class="col-xs-3 form-group" style="padding-left:1%">
         @Html.Label("Price: ")
         @Html.Editor("PriceTxt" + i, new { htmlAttributes = new { @class = "form-control", @type = "number", @readonly = "true" } })
     </div>
-    <div class="col-xs-2 form-group">
+    <div class="col-xs-2 form-group" style="padding-left:1%">
         <br />
         <a class="btn" style="margin-bottom:10px;background-color:#da251c;color:white;padding-top:10px;" onclick="OnButtonClickForm(@i)"><i class="bi bi-arrow-up-square-fill"></i>&nbsp;&nbsp;Remove</a>
 

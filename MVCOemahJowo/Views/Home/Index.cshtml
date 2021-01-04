@@ -63,9 +63,8 @@
 
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <div id="ProfitContainer"></div>
+
     </div>
 </div>
 <script type="text/javascript">
@@ -76,6 +75,8 @@
         var total_purchase = [];
         var monthyear = [];
         var totalcost = [];
+        var monthyearprofit = [];
+        var totalprofit = [];
         $.ajax({
             type: "POST",
             url: "/Home/GetProdDashboard",
@@ -127,6 +128,25 @@
                     totalcost.push(item.totalcost);
                 });
                 loadChartCost(monthyear, totalcost);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });  
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetProfitLoss",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    monthyearprofit.push(item.Monthyear);
+                    totalprofit.push(item.totalincome);
+                });
+                loadChartProfit(monthyearprofit, totalprofit);
             },
             error: function (errormessage) {
                 $('#h2').html(errormessage.responseText);
@@ -311,5 +331,63 @@
             }]
         });
     }  
-   
+    function loadChartProfit(category, val2) {
+
+        Highcharts.chart('ProfitContainer', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Last 5 Month Cost'
+            },
+            subtitle: {
+                text: 'Cost'
+            },
+            xAxis: {
+                categories: category,
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Population (millions)',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' millions'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Total',
+                data: val2
+            }]
+        });
+    }  
 </script>

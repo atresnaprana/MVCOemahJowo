@@ -23,7 +23,7 @@
     newModel.prodDD = db.mt_prod.OrderBy(y => y.PROD_NAME).ToList();
 }
 <form id="mainform" style="border:solid; border-width:1px;">
-    <div class="row" style="padding-left:5px;">
+    <div class="row" style="padding-left:3%;">
         @Html.HiddenFor(model => model.transhdr.TRANS_ID, new { htmlAttributes = new { @class = "form-control" } })
 
         <div class="col-xs-3 form-group">
@@ -31,12 +31,12 @@
             @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.transhdr.TRANS_DATE)
         </div>
-        <div class="col-xs-3 form-group">
+        <div class="col-xs-3 form-group" style="padding-left:1%;">
             <label for="exampleInputPassword1">Description</label>
             @Html.EditorFor(model => model.DESCRIPTION, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.transhdr.DESCRIPTION)
         </div>
-        <div class="col-xs-3 form-group">
+        <div class="col-xs-3 form-group" style="padding-left:1%;">
             <label for="exampleInputPassword1">Customer</label>
             <br />
             @Html.DropDownListFor(model => model.CUST_ID, new SelectList(Model.custDD, "CUST_ID", "CUST_NAME"), "Select", new { htmlAttributes = new { @class = "form-control" } })
@@ -53,7 +53,7 @@
         </div>*@
     <br />
 
-    <div id='ajaxDivTrans' style="padding-left:5px;">
+    <div id='ajaxDivTrans' style="padding-left:2%;">
         @Html.Partial("TransactionFormPartial", newModel)
     </div>
     <br />

@@ -132,8 +132,37 @@ namespace MVCOemahJowo.Controllers
                 Monthyear = cl.First().Monthyear,
                 totalcost = cl.Sum(c => c.totalcost),
             }).OrderBy(y => y.Monthyear).ToList();
+            List<dashboardincome> dashboardincomes = new List<dashboardincome>();
+            var incomedt = db.mt_transaction.ToList();
+            foreach (var dt in incomedt)
+            {
+                if (dt.TRANS_DATE > DateTime.Now.AddMonths(-4))
+                {
+                    dashboardincome fld = new dashboardincome();
+                    var month = dt.TRANS_DATE.ToString("MM-yyyy");
+                    fld.Monthyear = month;
+                    double countpurchase = 0;
+                    countpurchase = countpurchase + dt.PRICE;
+                    fld.totalincome = countpurchase;
+                    dashboardincomes.Add(fld);
+                }
+            }
+            List<dashboardincome> resultincome = dashboardincomes.GroupBy(l => l.Monthyear)
+            .Select(cl => new dashboardincome
+            {
+                Monthyear = cl.First().Monthyear,
+                totalincome = cl.Sum(c => c.totalincome),
+            }).OrderBy(y => y.Monthyear).ToList();
+            foreach(var dt in resultincome)
+            {
+                var dtcost = result.Where(y => y.Monthyear == dt.Monthyear).FirstOrDefault();
+                if(dtcost != null)
+                {
+                    dt.totalincome = dt.totalincome - dtcost.totalcost;
+                }
+            }
             //dashboardcosts = dashboardcosts.OrderBy(y => y.Monthyear).ToList();
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(resultincome, JsonRequestBehavior.AllowGet);
         }
         public ActionResult About()
         {
