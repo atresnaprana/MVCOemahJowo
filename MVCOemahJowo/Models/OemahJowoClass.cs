@@ -38,7 +38,22 @@ namespace MVCOemahJowo.Models
         public mt_trans_hdr transhdr { get; set; }
         public List<mt_trans_dtl> transDtl { get; set; }
         public mt_transaction fieldEdit { get; set; }
-       public List<TransRptField> transrptdt { get; set; }
+        public List<TransRptField> transrptdt { get; set; }
+        public List<mt_prod_cat> prodCatDt { get; set; }
+    }
+    public class prodClass
+    {
+        public int PROD_ID { get; set; }
+        public string PROD_NAME { get; set; }
+        public string DESCRIPTION { get; set; }
+        public double PRICE { get; set; }
+        public System.DateTime ENTRY_DATE { get; set; }
+        public string ENTRY_USER { get; set; }
+        public System.DateTime UPDATE_DATE { get; set; }
+        public string UPDATE_USER { get; set; }
+        public int prod_cat_id { get; set; }
+        public List<mt_prod_cat> prodCatDD { get; set; }
+
     }
     public class TransRptField
     {

@@ -56,7 +56,10 @@ namespace MVCOemahJowo.Controllers.ProductMaster
             }
             else
             {
-                return View();
+                prodClass field = new prodClass();
+                var prodCatDt = db.mt_prod_cat.OrderBy(y => y.category_name).ToList();
+                field.prodCatDD = prodCatDt;
+                return View(field);
             }
         }
         //GET: /BBSActionList/Edit
@@ -73,18 +76,26 @@ namespace MVCOemahJowo.Controllers.ProductMaster
             {
                 prodid = Request.QueryString["prodid"];
                 int ids = Convert.ToInt32(prodid);
+                prodClass field = new prodClass();
                 using (db)
                 {
                     
                     var formDt = db.mt_prod.Where(x => x.PROD_ID == ids).FirstOrDefault<mt_prod>();
-                    return View(formDt);
+                    var prodcatdt = db.mt_prod_cat.OrderBy(y => y.category_name).ToList();
+                    field.prodCatDD = prodcatdt;
+                    field.PROD_ID = formDt.PROD_ID;
+                    field.PROD_NAME = formDt.PROD_NAME;
+                    field.DESCRIPTION = formDt.DESCRIPTION;
+                    field.PRICE = formDt.PRICE;
+                    field.prod_cat_id = formDt.prod_cat_id;
+                    return View(field);
                 }
             }
         }
 
         [HttpPost]
         //POST: Insert to database logic
-        public ActionResult Insert(mt_prod prodDt)
+        public ActionResult Insert(prodClass prodDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -94,7 +105,7 @@ namespace MVCOemahJowo.Controllers.ProductMaster
             }
             else
             {
-                mt_prod dt;
+                mt_prod dt = new mt_prod();
 
                 var editmode = Request.QueryString["editmode"];
                 var username = User.Identity.Name;
@@ -108,7 +119,16 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                 {
                     try
                     {
-                        db.mt_prod.Add(prodDt);
+                        dt.PROD_NAME = prodDt.PROD_NAME;
+                        dt.prod_cat_id = prodDt.prod_cat_id;
+                        dt.DESCRIPTION = prodDt.DESCRIPTION;
+                        dt.PRICE = prodDt.PRICE;
+                        dt.ENTRY_DATE = prodDt.ENTRY_DATE;
+                        dt.ENTRY_USER = prodDt.ENTRY_USER;
+                        dt.UPDATE_DATE = prodDt.UPDATE_DATE;
+                        dt.UPDATE_USER = prodDt.UPDATE_USER;
+
+                        db.mt_prod.Add(dt);
                         db.SaveChanges();
                         return Json(new { success = true, message = "Saved successfully" }, JsonRequestBehavior.AllowGet);
                     }
@@ -128,7 +148,7 @@ namespace MVCOemahJowo.Controllers.ProductMaster
 
         [HttpPost]
         //POST: Update to database logic
-        public ActionResult Update(mt_prod prodDt)
+        public ActionResult Update(prodClass prodDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -150,6 +170,7 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                     dtfromdb.PROD_NAME = prodDt.PROD_NAME;
                     dtfromdb.DESCRIPTION = prodDt.DESCRIPTION;
                     dtfromdb.PRICE = prodDt.PRICE;
+                    dtfromdb.prod_cat_id = prodDt.prod_cat_id;
                     dtfromdb.UPDATE_DATE = prodDt.UPDATE_DATE;
                     dtfromdb.UPDATE_USER = prodDt.UPDATE_USER;
                     try

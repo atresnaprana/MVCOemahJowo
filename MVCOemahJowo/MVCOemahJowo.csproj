@@ -173,6 +173,7 @@
     <Compile Include="Controllers\CustomerMaster\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
+    <Compile Include="Controllers\ProdCatMaster\ProdCatController.cs" />
     <Compile Include="Controllers\ProductMaster\ProductController.cs" />
     <Compile Include="Controllers\Reporting\ReportController.cs" />
     <Compile Include="Controllers\TransactionMaster2\TransactionNewController.cs" />
@@ -442,6 +443,9 @@
     <Content Include="Views\Report\TestReportViewer.cshtml" />
     <Content Include="Views\Report\TransRpt.cshtml" />
     <Content Include="Views\Report\TransRptPdf.cshtml" />
+    <Content Include="Views\ProdCat\Index.cshtml" />
+    <Content Include="Views\ProdCat\AddorEdit.cshtml" />
+    <Content Include="Views\ProdCat\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

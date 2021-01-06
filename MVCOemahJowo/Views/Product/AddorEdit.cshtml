@@ -1,5 +1,5 @@
 ﻿
-@model MVCOemahJowo.Models.mt_prod
+@model MVCOemahJowo.Models.prodClass
 @{
     Layout = null;
 }
@@ -13,6 +13,11 @@
         @Html.Label("Product name: ")
         @Html.EditorFor(model => model.PROD_NAME, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.PROD_NAME)
+    </div>
+    <div class="form-group">
+        @Html.Label("Category: ")
+        <br />
+        @Html.DropDownListFor(model => model.prod_cat_id, new SelectList(Model.prodCatDD, "id", "category_name"), "Select", new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <div class="form-group">
         @Html.Label("Description: ")
@@ -34,4 +39,10 @@
         <input type="reset" value="Reset" class="btn btn-warning" />
     </div>
 }
+<script>
+    $(document).ready(function () {
+        //$('#PHONE').mask('0000-0000000000');
+        $('#prod_cat_id').select2({ width: 'resolve' });
+    });
+</script>
 

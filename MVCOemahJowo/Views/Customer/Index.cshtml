@@ -35,6 +35,7 @@
             <li>
                 @Html.ActionLink("Home", "Index", "Home")
             </li>
+            >
             <li class="active">Customer</li>
         </ol>
     </div>
@@ -108,7 +109,7 @@ $(document).ready(function () {
          {
              extend: 'excel',
              text: 'Export to Excel',
-             title: 'BBS Action List',
+             title: 'CustomerList',
              exportOptions: {
                  columns: ':visible'
                  //,modifier: {

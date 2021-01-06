@@ -6,13 +6,13 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using MVCOemahJowo.Models;
 using DocumentFormat.OpenXml.Office2010.Excel;
-
-namespace MVCOemahJowo.Controllers.CustomerMaster
+namespace MVCOemahJowo.Controllers.ProdCatMaster
 {
-    public class CustomerController : Controller
+    public class ProdCatController : Controller
     {
         private oemahjowodbEntities db = new oemahjowodbEntities();
-        // GET: Customer
+
+        // GET: ProdCat
         public ActionResult Index()
         {
             var id = Session["id"];
@@ -36,19 +36,17 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
             }
             else
             {
-                List<mt_customer> custDt = db.mt_customer.ToList().Select(dt => new mt_customer
+                List<mt_prod_cat> catDt = db.mt_prod_cat.ToList().Select(dt => new mt_prod_cat
                 {
-                    CUST_ID = dt.CUST_ID,
-                    CUST_NAME = dt.CUST_NAME,
-                    PHONE = dt.PHONE,
-                    ADDRESS = dt.ADDRESS,
-                    EMAIL = dt.EMAIL,
-                    ENTRY_USER = dt.ENTRY_USER,
-                    ENTRY_DATE = dt.ENTRY_DATE,
-                    UPDATE_DATE = dt.UPDATE_DATE,
-                    UPDATE_USER = dt.UPDATE_USER
-                }).ToList<mt_customer>();
-                return Json(new { data = custDt }, JsonRequestBehavior.AllowGet);
+                    id = dt.id,
+                    category_name = dt.category_name,
+                    amount = dt.amount,
+                    entry_user = dt.entry_user,
+                    entry_date = dt.entry_date,
+                    update_date = dt.update_date,
+                    update_user = dt.update_user
+                }).ToList<mt_prod_cat>();
+                return Json(new { data = catDt }, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]
@@ -65,7 +63,7 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
                 return View();
             }
         }
-        public ActionResult Edit(string custid)
+        public ActionResult Edit(string catid)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -75,19 +73,19 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
             }
             else
             {
-                custid = Request.QueryString["custid"];
-                int ids = Convert.ToInt32(custid);
+                catid = Request.QueryString["catid"];
+                int ids = Convert.ToInt32(catid);
                 using (db)
                 {
 
-                    var formDt = db.mt_customer.Where(x => x.CUST_ID == ids).FirstOrDefault<mt_customer>();
+                    var formDt = db.mt_prod_cat.Where(x => x.id == ids).FirstOrDefault<mt_prod_cat>();
                     return View(formDt);
                 }
             }
         }
         [HttpPost]
         //POST: Insert to database logic
-        public ActionResult Insert(mt_customer custDt)
+        public ActionResult Insert(mt_prod_cat catDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -99,11 +97,11 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
             {
 
                 var editmode = Request.QueryString["editmode"];
-                var username = User.Identity.Name;
-                custDt.ENTRY_DATE = DateTime.Now;
-                custDt.ENTRY_USER = userobject.ToString();
-                custDt.UPDATE_DATE = DateTime.Now;
-                custDt.UPDATE_USER = userobject.ToString();
+                var username = Session["id"].ToString();
+                catDt.entry_date = DateTime.Now;
+                catDt.entry_user = userobject.ToString();
+                catDt.update_date = DateTime.Now;
+                catDt.update_user = userobject.ToString();
                 var dtname = username;
 
                 using (db)
@@ -121,7 +119,7 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
                     //}
                     try
                     {
-                        db.mt_customer.Add(custDt);
+                        db.mt_prod_cat.Add(catDt);
                         db.SaveChanges();
                         return Json(new { success = true, message = "Saved successfully" }, JsonRequestBehavior.AllowGet);
                     }
@@ -135,7 +133,7 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
         }
         [HttpPost]
         //POST: Update to database logic
-        public ActionResult Update(mt_customer custDt)
+        public ActionResult Update(mt_prod_cat catDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -146,20 +144,17 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
             else
             {
                 var editmode = Request.QueryString["editmode"];
-                var username = User.Identity.Name;
 
-                custDt.UPDATE_DATE = DateTime.Now;
-                custDt.UPDATE_USER = userobject.ToString();
+                catDt.update_date = DateTime.Now;
+                catDt.update_user = userobject.ToString();
                 using (db)
                 {
-                    var id = custDt.CUST_ID;
-                    var dtfromdb = db.mt_customer.Find(id);
-                    dtfromdb.CUST_NAME = custDt.CUST_NAME;
-                    dtfromdb.PHONE = custDt.PHONE;
-                    dtfromdb.ADDRESS = custDt.ADDRESS;
-                    dtfromdb.EMAIL = custDt.EMAIL;
-                    dtfromdb.UPDATE_DATE = custDt.UPDATE_DATE;
-                    dtfromdb.UPDATE_USER = custDt.UPDATE_USER;
+                    var id = catDt.id;
+                    var dtfromdb = db.mt_prod_cat.Find(id);
+                    dtfromdb.category_name = catDt.category_name;
+                    dtfromdb.amount = catDt.amount;
+                    dtfromdb.update_date = catDt.update_date;
+                    dtfromdb.update_user = catDt.update_user;
                     try
                     {
                         db.Entry(dtfromdb).State = EntityState.Modified;
@@ -185,14 +180,14 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
             }
             else
             {
-                custid = Request.QueryString["custid"];
+                custid = Request.QueryString["catid"];
                 int ids = Convert.ToInt32(custid);
                 using (db)
                 {
-                    mt_customer custDt = db.mt_customer.Where(x => x.CUST_ID == ids).FirstOrDefault<mt_customer>();
+                    mt_prod_cat catDt = db.mt_prod_cat.Where(x => x.id == ids).FirstOrDefault<mt_prod_cat>();
                     try
                     {
-                        db.mt_customer.Remove(custDt);
+                        db.mt_prod_cat.Remove(catDt);
                         db.SaveChanges();
                         return Json(new { success = true, message = "Deleted successfully" }, JsonRequestBehavior.AllowGet);
                     }
