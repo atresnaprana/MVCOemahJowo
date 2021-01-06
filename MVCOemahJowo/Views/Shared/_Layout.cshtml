@@ -7,7 +7,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
-
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -52,9 +51,10 @@
         .dropdown:hover .dropbtn {
             background-color: cyan;
         }
+
         .navbar-custom {
             background-color: lightgreen;
-        } 
+        }
     </style>
 </head>
 <body>
@@ -70,13 +70,15 @@
                     @*@Html.ActionLink("Home", "Index", "Home")*@
                     <a class="nav-link" href="/Home/index">Home</a>
                 </li>
+             
                 <li class="nav-item">
-                    @*@Html.ActionLink("Transaction List", "Index", "Transaction")*@
-                    <a class="nav-link" href="/Transaction/index">Transaction</a>
+                    @*@Html.ActionLink("Transaction List2", "Index", "TransactionNew")*@
+                    <a class="nav-link" href="/TransactionNew/index">Transaction</a>
+
                 </li>
                 <li class="nav-item">
                     @*@Html.ActionLink("Transaction List2", "Index", "TransactionNew")*@
-                    <a class="nav-link" href="/TransactionNew/index">Transaction2</a>
+                    <a class="nav-link" href="/Report/index">Report</a>
 
                 </li>
                 <li class="nav-item dropdown">
@@ -88,53 +90,53 @@
                         <a class="dropdown-item" href="/Customer/index">Customer</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/Cost/index">Cost</a>
-                            @*<a href="#">@Html.ActionLink("Product", "Index", "Product")</a>
+                        @*<a href="#">@Html.ActionLink("Product", "Index", "Product")</a>
                             <a href="#">@Html.ActionLink("Customer", "Index", "Customer")</a>
                             <a href="#">@Html.ActionLink("Cost", "Index", "Cost")</a>*@
                     </div>
                 </li>
                 @*<li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>*@
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>*@
             </ul>
             @*<form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>*@
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>*@
         </div>
     </nav>
     @*<div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Oemah Jowo Enterprise", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Oemah Jowo Enterprise", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Transaction List", "Index", "Transaction")</li>
+                        <li>@Html.ActionLink("Transaction List2", "Index", "TransactionNew")</li>
+
+                        <li class="dropdown">
+                            <a class="dropbtn" href="#">Master General</a>
+                            <div class="dropdown-content">
+
+                                <a href="#">@Html.ActionLink("Product", "Index", "Product")</a>
+                                <a href="#">@Html.ActionLink("Customer", "Index", "Customer")</a>
+                                <a href="#">@Html.ActionLink("Cost", "Index", "Cost")</a>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Transaction List", "Index", "Transaction")</li>
-                    <li>@Html.ActionLink("Transaction List2", "Index", "TransactionNew")</li>
-
-                    <li class="dropdown">
-                        <a class="dropbtn" href="#">Master General</a>
-                        <div class="dropdown-content">
-
-                            <a href="#">@Html.ActionLink("Product", "Index", "Product")</a>
-                            <a href="#">@Html.ActionLink("Customer", "Index", "Customer")</a>
-                            <a href="#">@Html.ActionLink("Cost", "Index", "Cost")</a>
-                        </div>
-                    </li>
-
-
-                </ul>
-            </div>
-        </div>
-    </div>*@
+        </div>*@
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -147,6 +149,14 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/pdfmake.min.js"></script>
+    <script src="~/Scripts/buttons.flash.min.js"></script>
+    <script src="~/Scripts/buttons.html5.min.js"></script>
+    <script src="~/Scripts/buttons.print.min.js"></script>
+    <script src="~/Scripts/jszip.min.js"></script>
+    <script src="~/Scripts/pdfmake.min.js"></script>
+    <script src="~/Scripts/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
     <script src="~/Scripts/select2.js"></script>

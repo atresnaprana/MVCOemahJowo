@@ -41,7 +41,6 @@
           <Property Name="ENTRY_DATE" Type="date" Nullable="false" />
           <Property Name="ENTRY_USER" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="TRANS_DATE" Type="date" Nullable="false" />
-          <Property Name="ssma$rowid" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="mt_customer">
           <Key>
@@ -261,7 +260,6 @@
           <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TRANS_DATE" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ssma_rowid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="mt_customer">
           <Key>
@@ -528,7 +526,6 @@
                 <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
                 <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
                 <ScalarProperty Name="TRANS_DATE" ColumnName="TRANS_DATE" />
-                <ScalarProperty Name="ssma_rowid" ColumnName="ssma$rowid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

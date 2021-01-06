@@ -8,6 +8,8 @@ using System.Data.Entity;
 using System.Data;
 using System.Web.Script.Serialization;
 using DocumentFormat.OpenXml.ExtendedProperties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MVCOemahJowo.Controllers.TransactionMaster2
 {
@@ -116,7 +118,7 @@ namespace MVCOemahJowo.Controllers.TransactionMaster2
             string issubmit = Request.QueryString["isSubmit"];
             mt_trans_hdr[] formHdrDt = js.Deserialize<mt_trans_hdr[]>(formHdr);
             mt_trans_dtl[] formDtlDt = js.Deserialize<mt_trans_dtl[]>(formTrans);
-
+            
             mt_trans_hdr formDt = new mt_trans_hdr();
 
             //if (string.IsNullOrEmpty(formHdrDt[0].VENDOR_ID))
@@ -131,6 +133,8 @@ namespace MVCOemahJowo.Controllers.TransactionMaster2
             //formDt.KINERJA_ID = nextidkontrak();
             formDt.CUST_ID = formHdrDt[0].CUST_ID;
             formDt.DESCRIPTION = formHdrDt[0].DESCRIPTION;
+            //var date = formHdrDt[0].TRANS_DATE.ToString("MM/dd/yyyy");
+            //var dateconv = Convert.ToDateTime(date);
             formDt.TRANS_DATE = formHdrDt[0].TRANS_DATE;
 
             formDt.ENTRY_USER = username;
@@ -246,6 +250,7 @@ namespace MVCOemahJowo.Controllers.TransactionMaster2
 
             formDt.CUST_ID = formHdrDt[0].CUST_ID;
             formDt.DESCRIPTION = formHdrDt[0].DESCRIPTION;
+         
             formDt.TRANS_DATE = formHdrDt[0].TRANS_DATE;
 
             formDt.ENTRY_USER = username;

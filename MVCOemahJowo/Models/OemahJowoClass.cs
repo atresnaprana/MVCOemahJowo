@@ -15,11 +15,17 @@ namespace MVCOemahJowo.Models
         public int PROD_ID { get; set; }
         public string PROD_NAME { get; set; }
         public string CUST_NAME { get; set; }
+        public double debit { get; set; }
+        public double credit { get; set; }
+        public int phone { get; set; }
+
         public double PRICE { get; set; }
         public int CUST_ID { get; set; }
         public System.DateTime ENTRY_DATE { get; set; }
         public string ENTRY_USER { get; set; }
         public string TRANS_DATE_STR { get; set; }
+        public string datefromstr { get; set; }
+        public string datetostr { get; set; }
 
         public System.DateTime UPDATE_DATE { get; set; }
         public string UPDATE_USER { get; set; }
@@ -32,6 +38,19 @@ namespace MVCOemahJowo.Models
         public mt_trans_hdr transhdr { get; set; }
         public List<mt_trans_dtl> transDtl { get; set; }
         public mt_transaction fieldEdit { get; set; }
+       public List<TransRptField> transrptdt { get; set; }
+    }
+    public class TransRptField
+    {
+        public System.DateTime TRANS_DATE { get; set; }
+
+        public string DESCRIPTION { get; set; }
+        public string CUST_NAME { get; set; }
+        public double PRICE { get; set; }
+        public string phone { get; set; }
+
+        public double debit { get; set; }
+        public double credit { get; set; }
     }
     public class dashboardprod
     {

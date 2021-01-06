@@ -22,6 +22,5 @@ namespace MVCOemahJowo.Models
         public System.DateTime ENTRY_DATE { get; set; }
         public string ENTRY_USER { get; set; }
         public System.DateTime TRANS_DATE { get; set; }
-        public System.Guid ssma_rowid { get; set; }
     }
 }

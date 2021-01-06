@@ -133,13 +133,13 @@ namespace MVCOemahJowo.Controllers
                 totalcost = cl.Sum(c => c.totalcost),
             }).OrderBy(y => y.Monthyear).ToList();
             List<dashboardincome> dashboardincomes = new List<dashboardincome>();
-            var incomedt = db.mt_transaction.ToList();
+            var incomedt = db.mt_trans_dtl.ToList();
             foreach (var dt in incomedt)
             {
-                if (dt.TRANS_DATE > DateTime.Now.AddMonths(-4))
+                if (dt.mt_trans_hdr.TRANS_DATE > DateTime.Now.AddMonths(-4))
                 {
                     dashboardincome fld = new dashboardincome();
-                    var month = dt.TRANS_DATE.ToString("MM-yyyy");
+                    var month = dt.mt_trans_hdr.TRANS_DATE.ToString("MM-yyyy");
                     fld.Monthyear = month;
                     double countpurchase = 0;
                     countpurchase = countpurchase + dt.PRICE;

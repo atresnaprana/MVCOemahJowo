@@ -1,0 +1,76 @@
+﻿@model MVCOemahJowo.Models.OemahJowoClass
+<h3><b>Transaction Report Oemah Jowo</b></h3>
+<br />
+@{
+    Layout = null;
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-grid.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<table class="table table-bordered" border="1" id="table-progress" bordercolor="#ff0000" cellpadding="0">
+    <thead>
+        <tr>
+            <th class="fs10 text-center light" style="background-color:cyan">Transaction Date</th>
+            <th class="fs10 text-center light" style="background-color:cyan">Description</th>
+            <th class="fs10 text-center light" style="background-color:cyan">Customer</th>
+            <th class="fs10 text-center light" style="background-color:cyan">Phone</th>
+            <th class="fs10 text-center light" style="background-color:cyan">Debit</th>
+            <th class="fs10 text-center light" style="background-color:cyan">Credit</th>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            @*<tr bgcolor="#ADFF2F">
+                    <td colspan="14" align="center"><b>@dts.ASSET_NAME</b></td>
+                </tr>*@
+            foreach (var dtfld in Model.transrptdt)
+            {
+                <tr bgcolor="#F0FFF0">
+                    <td align="center">
+                        @if (dtfld.TRANS_DATE != null)
+                        {
+                            @dtfld.TRANS_DATE.ToString("dd/MM/yyyy")
+                        }
+
+                    </td>
+                    <td>
+                        @dtfld.DESCRIPTION
+                    </td>
+                    <td>
+                        @dtfld.CUST_NAME
+                    </td>
+                    <td>
+                        @dtfld.phone
+                    </td>
+                    <td>
+                        @dtfld.debit
+                    </td>
+                    <td>
+                        @dtfld.credit
+                    </td>
+
+                </tr>
+            }
+        }
+        <tr bgcolor="#F0FFF0">
+            <td align="center">
+                <b>GRAND TOTAL</b>
+            </td>
+            <td colspan="5" align="center">
+                @{
+                    var income = Model.transrptdt.Sum(y => y.debit);
+                    var expense = Model.transrptdt.Sum(y => y.credit);
+                    var total = income - expense;
+                }
+                <b>@total</b>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+
+<i>Generated on: @DateTime.Now</i>
+
+
