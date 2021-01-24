@@ -1,0 +1,43 @@
+﻿@model MVCOemahJowo.Models.OemahJowoClass
+<h3><b>Customer List Oemah Jowo</b></h3>
+<br />
+
+<table class="table table-bordered" border="1" id="table-progress" bordercolor="#ff0000" cellpadding="0">
+    <thead>
+        <tr>
+            <th class="fs10 text-center light" style="background-color:cyan">ID</th>
+            <th class="fs10 text-center light" style="background-color:cyan">Customer</th>
+            <th class="fs10 text-center light" style="background-color:cyan">Phone</th>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            @*<tr bgcolor="#ADFF2F">
+                    <td colspan="14" align="center"><b>@dts.ASSET_NAME</b></td>
+                </tr>*@
+            foreach (var dtfld in Model.custDD)
+            {
+                <tr bgcolor="#F0FFF0">
+                    <td align="center">
+                      @dtfld.CUST_ID
+
+                    </td>
+                    <td align="center">
+                        @dtfld.CUST_NAME
+                    </td>
+                    <td align="center">
+                        @dtfld.PHONE
+                    </td>
+                   
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+
+

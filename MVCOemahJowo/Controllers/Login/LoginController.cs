@@ -73,5 +73,11 @@ namespace MVCOemahJowo.Controllers.Login
             }
 
         }
+        public ActionResult Logout()
+        {
+            Session.Remove(Session["id"].ToString());
+            return RedirectToAction("index");
+           
+        }
     }
 }

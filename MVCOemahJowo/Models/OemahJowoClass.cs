@@ -26,6 +26,7 @@ namespace MVCOemahJowo.Models
         public string TRANS_DATE_STR { get; set; }
         public string datefromstr { get; set; }
         public string datetostr { get; set; }
+        public string catfilter { get; set; }
 
         public System.DateTime UPDATE_DATE { get; set; }
         public string UPDATE_USER { get; set; }
@@ -39,6 +40,7 @@ namespace MVCOemahJowo.Models
         public List<mt_trans_dtl> transDtl { get; set; }
         public mt_transaction fieldEdit { get; set; }
         public List<TransRptField> transrptdt { get; set; }
+        public List<custcat> custcatdt { get; set; }
         public List<mt_prod_cat> prodCatDt { get; set; }
     }
     public class prodClass
@@ -54,6 +56,11 @@ namespace MVCOemahJowo.Models
         public int prod_cat_id { get; set; }
         public List<mt_prod_cat> prodCatDD { get; set; }
 
+    }
+    public class custcat
+    {
+        public string catid { get; set; }
+        public string catname { get; set;  }
     }
     public class TransRptField
     {
