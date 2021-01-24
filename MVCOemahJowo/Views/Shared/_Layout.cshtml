@@ -53,8 +53,15 @@
         }
 
         .navbar-custom {
-            background-color: lightgreen;
+            background-color:hotpink;
         }
+        .navbar-light .navbar-brand {
+            color: White;
+        }
+        .navbar-light .nav-item .nav-link {
+            color: White;
+        }
+       
     </style>
 </head>
 <body>
@@ -68,7 +75,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     @*@Html.ActionLink("Home", "Index", "Home")*@
-                    <a class="nav-link" href="/Home/index">Home</a>
+                    <a class="nav-link" style="color:white" href="/Home/index">Home</a>
                 </li>
 
                 <li class="nav-item">
