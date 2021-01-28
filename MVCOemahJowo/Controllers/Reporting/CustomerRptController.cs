@@ -16,23 +16,33 @@ namespace MVCOemahJowo.Controllers.Reporting
         // GET: CustomerRpt
         public ActionResult Index()
         {
-            OemahJowoClass fld = new OemahJowoClass();
-            List<custcat> catfld = new List<custcat>();
-            custcat fld1 = new custcat();
-            fld1.catid = "ALL";
-            fld1.catname = "ALL";
-            catfld.Add(fld1);
-            custcat fld2 = new custcat();
-            fld2.catid = "GOJEK";
-            fld2.catname = "GOJEK";
-            catfld.Add(fld2);
+            var id = Session["id"];
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Login");
 
-            custcat fld3 = new custcat();
-            fld3.catid = "GRAB";
-            fld3.catname = "GRAB";
-            catfld.Add(fld3);
-            fld.custcatdt = catfld;
-            return View(fld);
+            }
+            else
+            {
+                OemahJowoClass fld = new OemahJowoClass();
+                List<custcat> catfld = new List<custcat>();
+                custcat fld1 = new custcat();
+                fld1.catid = "ALL";
+                fld1.catname = "ALL";
+                catfld.Add(fld1);
+                custcat fld2 = new custcat();
+                fld2.catid = "GOJEK";
+                fld2.catname = "GOJEK";
+                catfld.Add(fld2);
+
+                custcat fld3 = new custcat();
+                fld3.catid = "GRAB";
+                fld3.catname = "GRAB";
+                catfld.Add(fld3);
+                fld.custcatdt = catfld;
+                return View(fld);
+            }
+          
         }
         public ActionResult CustRpt()
         {

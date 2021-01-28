@@ -100,6 +100,15 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
 
                 var editmode = Request.QueryString["editmode"];
                 var username = User.Identity.Name;
+                if (string.IsNullOrEmpty(custDt.PHONE)){
+                    custDt.PHONE = "";
+                }
+                if (string.IsNullOrEmpty(custDt.ADDRESS)){
+                    custDt.ADDRESS = "";
+                }
+                if (string.IsNullOrEmpty(custDt.EMAIL)){
+                    custDt.EMAIL = "";
+                }
                 custDt.ENTRY_DATE = DateTime.Now;
                 custDt.ENTRY_USER = userobject.ToString();
                 custDt.UPDATE_DATE = DateTime.Now;
@@ -160,6 +169,18 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
                     dtfromdb.EMAIL = custDt.EMAIL;
                     dtfromdb.UPDATE_DATE = custDt.UPDATE_DATE;
                     dtfromdb.UPDATE_USER = custDt.UPDATE_USER;
+                    if (string.IsNullOrEmpty(custDt.PHONE))
+                    {
+                        custDt.PHONE = "";
+                    }
+                    if (string.IsNullOrEmpty(custDt.ADDRESS))
+                    {
+                        custDt.ADDRESS = "";
+                    }
+                    if (string.IsNullOrEmpty(custDt.EMAIL))
+                    {
+                        custDt.EMAIL = "";
+                    }
                     try
                     {
                         db.Entry(dtfromdb).State = EntityState.Modified;
