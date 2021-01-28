@@ -171,15 +171,15 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
                     dtfromdb.UPDATE_USER = custDt.UPDATE_USER;
                     if (string.IsNullOrEmpty(custDt.PHONE))
                     {
-                        custDt.PHONE = "";
+                        dtfromdb.PHONE = "";
                     }
                     if (string.IsNullOrEmpty(custDt.ADDRESS))
                     {
-                        custDt.ADDRESS = "";
+                        dtfromdb.ADDRESS = "";
                     }
                     if (string.IsNullOrEmpty(custDt.EMAIL))
                     {
-                        custDt.EMAIL = "";
+                        dtfromdb.EMAIL = "";
                     }
                     try
                     {
