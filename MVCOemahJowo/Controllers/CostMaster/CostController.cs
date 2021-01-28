@@ -16,7 +16,16 @@ namespace MVCOemahJowo.Controllers.CostMaster
         // GET: Cost
         public ActionResult Index()
         {
-            return View();
+            var id = Session["id"];
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Login");
+
+            }
+            else
+            {
+                return View();
+            }
         }
         public ActionResult GetData()
         {

@@ -22,7 +22,16 @@ namespace MVCOemahJowo.Controllers.Reporting
         // GET: Report
         public ActionResult Index()
         {
-            return View();
+            var id = Session["id"];
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Login");
+
+            }
+            else
+            {
+                return View();
+            }
         }
         public ActionResult PrintPdfTrans(OemahJowoClass obj)
         {

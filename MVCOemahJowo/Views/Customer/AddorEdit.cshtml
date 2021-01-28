@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         @Html.Label("Phone: ")
-        @Html.EditorFor(model => model.PHONE, new { htmlAttributes = new { @class = "form-control", data_mask = "0000-000000000" } })
+        @Html.EditorFor(model => model.PHONE, new { htmlAttributes = new { @class = "form-control"} })
         @Html.ValidationMessageFor(model => model.PHONE)
     </div>
     <div class="form-group">

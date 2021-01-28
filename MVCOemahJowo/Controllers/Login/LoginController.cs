@@ -75,8 +75,18 @@ namespace MVCOemahJowo.Controllers.Login
         }
         public ActionResult Logout()
         {
-            Session.Remove(Session["id"].ToString());
-            return RedirectToAction("index");
+            var id = Session["id"];
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Login");
+
+            }
+            else
+            {
+                Session.Remove(Session["id"].ToString());
+                return RedirectToAction("index");
+            }
+           
            
         }
     }
