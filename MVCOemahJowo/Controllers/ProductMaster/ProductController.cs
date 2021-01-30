@@ -124,7 +124,7 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                         dt.DESCRIPTION = prodDt.DESCRIPTION;
                         if (prodDt.DESCRIPTION == null)
                         {
-                            dtfromdb.DESCRIPTION = "";
+                            dt.DESCRIPTION = "";
                         }
                         dt.PRICE = prodDt.PRICE;
                         dt.ENTRY_DATE = prodDt.ENTRY_DATE;
