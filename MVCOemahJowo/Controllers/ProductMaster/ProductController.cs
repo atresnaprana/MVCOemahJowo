@@ -122,6 +122,10 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                         dt.PROD_NAME = prodDt.PROD_NAME;
                         dt.prod_cat_id = prodDt.prod_cat_id;
                         dt.DESCRIPTION = prodDt.DESCRIPTION;
+                        if(prodDt.DESCRIPTION == null)
+                        {
+                            dt.DESCRIPTION = "";
+                        }
                         dt.PRICE = prodDt.PRICE;
                         dt.ENTRY_DATE = prodDt.ENTRY_DATE;
                         dt.ENTRY_USER = prodDt.ENTRY_USER;
@@ -169,6 +173,10 @@ namespace MVCOemahJowo.Controllers.ProductMaster
                     var dtfromdb = db.mt_prod.Find(id);
                     dtfromdb.PROD_NAME = prodDt.PROD_NAME;
                     dtfromdb.DESCRIPTION = prodDt.DESCRIPTION;
+                    if (prodDt.DESCRIPTION == null)
+                    {
+                        dtfromdb.DESCRIPTION = "";
+                    }
                     dtfromdb.PRICE = prodDt.PRICE;
                     dtfromdb.prod_cat_id = prodDt.prod_cat_id;
                     dtfromdb.UPDATE_DATE = prodDt.UPDATE_DATE;
