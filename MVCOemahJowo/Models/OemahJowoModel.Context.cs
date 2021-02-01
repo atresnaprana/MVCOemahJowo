@@ -27,7 +27,6 @@ namespace MVCOemahJowo.Models
     
         public virtual DbSet<me_config> me_config { get; set; }
         public virtual DbSet<me_user> me_user { get; set; }
-        public virtual DbSet<mg_shoplist> mg_shoplist { get; set; }
         public virtual DbSet<mt_customer> mt_customer { get; set; }
         public virtual DbSet<mt_prod> mt_prod { get; set; }
         public virtual DbSet<mt_transaction> mt_transaction { get; set; }
@@ -35,5 +34,6 @@ namespace MVCOemahJowo.Models
         public virtual DbSet<mt_prod_cat> mt_prod_cat { get; set; }
         public virtual DbSet<mt_trans_dtl> mt_trans_dtl { get; set; }
         public virtual DbSet<mt_trans_hdr> mt_trans_hdr { get; set; }
+        public virtual DbSet<mg_shoplist> mg_shoplist { get; set; }
     }
 }

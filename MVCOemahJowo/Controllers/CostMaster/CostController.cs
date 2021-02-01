@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using MVCOemahJowo.Models;
 using System.Data.Entity;
 using System.Data;
+using System.Windows.Forms;
 
 namespace MVCOemahJowo.Controllers.CostMaster
 {
@@ -79,13 +80,18 @@ namespace MVCOemahJowo.Controllers.CostMaster
                 {
 
                     var formDt = db.mg_shoplist.Where(x => x.ID == ids).FirstOrDefault<mg_shoplist>();
-                    return View(formDt);
+                    mg_shoplist2 forms = new mg_shoplist2();
+                    forms.ID = formDt.ID;
+                    forms.TRANS_DATE_STR = formDt.TRANS_DATE.ToString("dd/MM/yyyy");
+                    forms.AMOUNT = formDt.AMOUNT;
+                    forms.NOTES = formDt.NOTES;
+                    return View(forms);
                 }
             }
         }
         [HttpPost]
         //POST: Insert to database logic
-        public ActionResult Insert(mg_shoplist costDt)
+        public ActionResult Insert(mg_shoplist2 costDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -95,20 +101,24 @@ namespace MVCOemahJowo.Controllers.CostMaster
             }
             else
             {
-                costDt.TRANS_DATE = Convert.ToDateTime(costDt.TRANS_DATE.ToString("MM/dd/yyyy"));
+                //var dates = Convert.ToDateTime(costDt.TRANS_DATE_STR).ToString("MM/dd/yyyy");
+                costDt.TRANS_DATE = Convert.ToDateTime(costDt.TRANS_DATE_STR);
                 var editmode = Request.QueryString["editmode"];
                 var username = User.Identity.Name;
-                costDt.ENTRY_DATE = DateTime.Now;
-                costDt.ENTRY_USER = userobject.ToString();
-                costDt.UPDATE_DATE = DateTime.Now;
-                costDt.UPDATE_USER = userobject.ToString();
                 var dtname = username;
-
+                mg_shoplist form = new mg_shoplist();
+                form.AMOUNT = costDt.AMOUNT;
+                form.TRANS_DATE = costDt.TRANS_DATE;
+                form.NOTES = costDt.NOTES;
+                form.ENTRY_DATE = DateTime.Now;
+                form.ENTRY_USER = userobject.ToString();
+                form.UPDATE_DATE = DateTime.Now;
+                form.UPDATE_USER = userobject.ToString();
                 using (db)
                 {
                     try
                     {
-                        db.mg_shoplist.Add(costDt);
+                        db.mg_shoplist.Add(form);
                         db.SaveChanges();
                         return Json(new { success = true, message = "Saved successfully" }, JsonRequestBehavior.AllowGet);
                     }
@@ -128,7 +138,7 @@ namespace MVCOemahJowo.Controllers.CostMaster
 
         [HttpPost]
         //POST: Update to database logic
-        public ActionResult Update(mg_shoplist costDt)
+        public ActionResult Update(mg_shoplist2 costDt)
         {
             var userobject = Session["id"];
             if (userobject == null)
@@ -140,7 +150,8 @@ namespace MVCOemahJowo.Controllers.CostMaster
             {
                 var editmode = Request.QueryString["editmode"];
                 var username = User.Identity.Name;
-                costDt.TRANS_DATE = Convert.ToDateTime(costDt.TRANS_DATE.ToString("MM/dd/yyyy"));
+                var datestr = costDt.TRANS_DATE_STR;
+                costDt.TRANS_DATE = Convert.ToDateTime(datestr);
                 costDt.UPDATE_DATE = DateTime.Now;
                 costDt.UPDATE_USER = userobject.ToString();
                 using (db)

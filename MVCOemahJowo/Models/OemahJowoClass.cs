@@ -57,6 +57,18 @@ namespace MVCOemahJowo.Models
         public List<mt_prod_cat> prodCatDD { get; set; }
 
     }
+    public class mg_shoplist2
+    {
+        public int ID { get; set; }
+        public string NOTES { get; set; }
+        public double AMOUNT { get; set; }
+        public System.DateTime UPDATE_DATE { get; set; }
+        public string TRANS_DATE_STR { get; set; }
+        public string UPDATE_USER { get; set; }
+        public System.DateTime ENTRY_DATE { get; set; }
+        public string ENTRY_USER { get; set; }
+        public System.DateTime TRANS_DATE { get; set; }
+    }
     public class custcat
     {
         public string catid { get; set; }

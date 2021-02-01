@@ -248,19 +248,6 @@
           <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
-        <EntityType Name="mg_shoplist">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NOTES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AMOUNT" Type="Double" Nullable="false" />
-          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="UPDATE_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ENTRY_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TRANS_DATE" Type="DateTime" Nullable="false" Precision="0" />
-        </EntityType>
         <EntityType Name="mt_customer">
           <Key>
             <PropertyRef Name="CUST_ID" />
@@ -357,7 +344,6 @@
         <EntityContainer Name="oemahjowodbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="me_config" EntityType="Self.me_config" />
           <EntitySet Name="me_user" EntityType="Self.me_user" />
-          <EntitySet Name="mg_shoplist" EntityType="Self.mg_shoplist" />
           <EntitySet Name="mt_customer" EntityType="Self.mt_customer" />
           <EntitySet Name="mt_prod" EntityType="Self.mt_prod" />
           <EntitySet Name="mt_transaction" EntityType="Self.mt_transaction" />
@@ -389,6 +375,7 @@
             <End Role="mt_trans_hdr" EntitySet="mt_trans_hdr" />
             <End Role="mt_trans_dtl" EntitySet="mt_trans_dtl" />
           </AssociationSet>
+          <EntitySet Name="mg_shoplist" EntityType="oemahjowodbModel.mg_shoplist" />
         </EntityContainer>
         <EntityType Name="mt_prod_cat">
           <Key>
@@ -483,6 +470,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="mg_shoplist">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOTES" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AMOUNT" Type="Double" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UPDATE_USER" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ENTRY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ENTRY_USER" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TRANS_DATE" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -512,20 +512,6 @@
                 <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
                 <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
                 <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="mg_shoplist">
-            <EntityTypeMapping TypeName="oemahjowodbModel.mg_shoplist">
-              <MappingFragment StoreEntitySet="mg_shoplist">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="NOTES" ColumnName="NOTES" />
-                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
-                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
-                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
-                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
-                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
-                <ScalarProperty Name="TRANS_DATE" ColumnName="TRANS_DATE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -635,6 +621,20 @@
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
                 <ScalarProperty Name="TRANS_ID" ColumnName="TRANS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mg_shoplist">
+            <EntityTypeMapping TypeName="oemahjowodbModel.mg_shoplist">
+              <MappingFragment StoreEntitySet="mg_shoplist">
+                <ScalarProperty Name="TRANS_DATE" ColumnName="TRANS_DATE" />
+                <ScalarProperty Name="ENTRY_USER" ColumnName="ENTRY_USER" />
+                <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
+                <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="NOTES" ColumnName="NOTES" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

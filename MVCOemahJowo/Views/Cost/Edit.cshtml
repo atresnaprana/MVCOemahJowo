@@ -1,9 +1,9 @@
 ﻿
-@model MVCOemahJowo.Models.mg_shoplist
+@model MVCOemahJowo.Models.mg_shoplist2
 @{
     Layout = null;
 }
-@using (Html.BeginForm("Insert", "Cost", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+@using (Html.BeginForm("Update", "Cost", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
 {
     <div class="form-group">
         @Html.Label("ID#")
@@ -15,10 +15,11 @@
         @Html.EditorFor(model => model.NOTES, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.NOTES)
     </div>
+
     <div class="form-group">
         @Html.Label("Transaction date: ")
-        @Html.EditorFor(model => model.TRANS_DATE, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.TRANS_DATE)
+        @Html.EditorFor(model => model.TRANS_DATE_STR, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TRANS_DATE_STR)
     </div>
     <div class="form-group">
         @Html.Label("Amount: ")
@@ -39,7 +40,7 @@
     $(document).ready(function () {
         //$('#PHONE').mask('0000-0000000000');
         //$('#TRANS_DATE').datepicker({ dateFormat: 'dd/mm/yy' });
-        $('#TRANS_DATE').datepicker();
+        $('#TRANS_DATE_STR').datepicker({ dateFormat: 'dd/mm/yy' }).datepicker();
 
     });
 </script>
