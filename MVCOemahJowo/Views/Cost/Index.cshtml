@@ -137,7 +137,7 @@ $(document).ready(function () {
                     var year = currentTime.getFullYear();
                     var date = day + "/" + month + "/" + year;
 
-                    return "<label>" + date + "</label>"
+                    return currentTime;
                 }
             },
 
@@ -150,7 +150,7 @@ $(document).ready(function () {
                     var year = currentTime.getFullYear();
                     var date = day + "/" + month + "/" + year;
 
-                    return "<label>" + date + "</label>"
+                    return currentTime;
                 }
             },
             { "data": "UPDATE_USER" },
@@ -163,7 +163,7 @@ $(document).ready(function () {
                     var year = currentTime.getFullYear();
                     var date = day + "/" + month + "/" + year;
 
-                    return "<label>" + date + "</label>"
+                    return currentTime;
                 }
             },
             { "data": "ENTRY_USER" }
