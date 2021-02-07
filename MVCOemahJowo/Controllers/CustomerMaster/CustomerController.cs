@@ -105,17 +105,17 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
                 custDt.UPDATE_DATE = DateTime.Now;
                 custDt.UPDATE_USER = userobject.ToString();
                 var dtname = username;
-                if (!string.IsNullOrEmpty(custDt.PHONE))
+                if (string.IsNullOrEmpty(custDt.PHONE))
                 {
-                    custDt.PHONE = "";
+                    custDt.PHONE = "none";
                 }
-                if (!string.IsNullOrEmpty(custDt.ADDRESS))
+                if (string.IsNullOrEmpty(custDt.ADDRESS))
                 {
-                    custDt.ADDRESS = "";
+                    custDt.ADDRESS = "none";
                 }
-                if (!string.IsNullOrEmpty(custDt.EMAIL))
+                if (string.IsNullOrEmpty(custDt.EMAIL))
                 {
-                    custDt.EMAIL = "";
+                    custDt.EMAIL = "none";
                 }
                 using (db)
                 {
@@ -171,17 +171,17 @@ namespace MVCOemahJowo.Controllers.CustomerMaster
                     dtfromdb.EMAIL = custDt.EMAIL;
                     dtfromdb.UPDATE_DATE = custDt.UPDATE_DATE;
                     dtfromdb.UPDATE_USER = custDt.UPDATE_USER;
-                    if (!string.IsNullOrEmpty(custDt.PHONE))
+                    if (string.IsNullOrEmpty(custDt.PHONE))
                     {
-                        dtfromdb.PHONE = "";
+                        dtfromdb.PHONE = "none";
                     }
-                    if (!string.IsNullOrEmpty(custDt.ADDRESS))
+                    if (string.IsNullOrEmpty(custDt.ADDRESS))
                     {
-                        dtfromdb.ADDRESS = "";
+                        dtfromdb.ADDRESS = "none";
                     }
-                    if (!string.IsNullOrEmpty(custDt.EMAIL))
+                    if (string.IsNullOrEmpty(custDt.EMAIL))
                     {
-                        dtfromdb.EMAIL = "";
+                        dtfromdb.EMAIL = "none";
                     }
                     try
                     {

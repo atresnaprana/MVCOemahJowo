@@ -380,6 +380,11 @@ namespace MVCOemahJowo.Controllers.TransactionMaster2
                 using (db)
                 {
                     mt_trans_hdr transdt = db.mt_trans_hdr.Where(x => x.TRANS_ID == ids).FirstOrDefault<mt_trans_hdr>();
+                    var dtl = db.mt_trans_dtl.ToList();
+                    foreach(var dt in dtl)
+                    {
+                        db.mt_trans_dtl.Remove(dt);
+                    }
                     try
                     {
                         db.mt_trans_hdr.Remove(transdt);
