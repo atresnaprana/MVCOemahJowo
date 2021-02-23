@@ -42,6 +42,7 @@ namespace MVCOemahJowo.Models
         public List<TransRptField> transrptdt { get; set; }
         public List<custcat> custcatdt { get; set; }
         public List<mt_prod_cat> prodCatDt { get; set; }
+        public List<homeCls> ddValDt { get; set; }
     }
     public class prodClass
     {
@@ -56,6 +57,11 @@ namespace MVCOemahJowo.Models
         public int prod_cat_id { get; set; }
         public List<mt_prod_cat> prodCatDD { get; set; }
 
+    }
+    public class homeCls
+    {
+        public int total { get; set; }
+        public string totalstr { get; set; }
     }
     public class mg_shoplist2
     {

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model MVCOemahJowo.Models.OemahJowoClass
+
+@{
     ViewBag.Title = "Home Page";
 }
 <script src="~/Scripts/highcharts.js"></script>
@@ -48,12 +50,35 @@
     .highcharts-data-table tr:hover {
         background: #f1f7ff;
     }
+
+    .ui-datepicker-calendar {
+        display: none;
+    }
 </style>
 
 <br />
+<div class="row">
+    <div class="col-md-2">
+        <label>Periode:</label>
+        <input name="startDate" id="startDate" class="date-picker" />
+        <input id="year" name="year" type="hidden">
+        <input id="month" name="month" type="hidden">
+
+    </div>
+    <div class="col-md-1">
+        <label>Total:</label>
+
+        @Html.DropDownList("ddTotal", new SelectList(Model.ddValDt, "total", "totalstr"), "Select", new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="col-md-2" style="padding-top:30px">
+        <a class="btn" style="background-color:#da251c;color:white;" onclick="SubmitFilter()">Submit</a>
+    </div>
+
+</div>
+<br />
+
 <div id="containers"></div>
-
-
+<br />
 <div class="row">
     <div class="col-md-4">
         <div id="CustContainer"></div>
@@ -68,15 +93,19 @@
     </div>
 </div>
 <script type="text/javascript">
+    var product = [];
+    var Total = [];
+    var customer = [];
+    var total_purchase = [];
+    var monthyear = [];
+    var totalcost = [];
+    var monthyearprofit = [];
+    var totalprofit = [];
+
     $(document).ready(function () {
-        var product = [];
-        var Total = [];
-        var customer = [];
-        var total_purchase = [];
-        var monthyear = [];
-        var totalcost = [];
-        var monthyearprofit = [];
-        var totalprofit = [];
+        $('.date-picker').height(30);
+        $('#ddTotal').select2({ width: 'resolve' });
+
         $.ajax({
             type: "POST",
             url: "/Home/GetProdDashboard",
@@ -95,7 +124,7 @@
                 $('#h2').html(errormessage.responseText);
                 return false;
             }
-        });  
+        });
         $.ajax({
             type: "POST",
             url: "/Home/GetCustDashboard",
@@ -114,7 +143,7 @@
                 $('#h2').html(errormessage.responseText);
                 return false;
             }
-        });  
+        });
         $.ajax({
             type: "POST",
             url: "/Home/GetCostDashboard",
@@ -133,7 +162,7 @@
                 $('#h2').html(errormessage.responseText);
                 return false;
             }
-        });  
+        });
         $.ajax({
             type: "POST",
             url: "/Home/GetProfitLoss",
@@ -152,10 +181,128 @@
                 $('#h2').html(errormessage.responseText);
                 return false;
             }
-        });  
+        });
+    });
+    function SubmitFilter() {
+        var year = $("#year").val();
+        var month = $("#month").val();
+        var totaldata = $("#ddTotal").val();
+        refreshproddashboard(month, year, totaldata);
+        refreshcustdashboard(month, year, totaldata);
+        refreshcostdashboard(month, year, totaldata);
+        refreshprofitlossdashboard(month, year, totaldata);
+    }
+    function refreshproddashboard(month, year, totaldata) {
+        product = [];
+        Total = [];
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetProdDashboard?month=" + month + "&year=" + year + "&total=" + totaldata,
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    product.push(item.prodcat_name);
+                    Total.push(item.total_sold);
+                });
+                loadChart(product, Total);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });
+    }
+    function refreshcustdashboard(month, year, totaldata) {
+        customer = [];
+        total_purchase = [];
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetCustDashboard?month=" + month + "&year=" + year + "&total=" + totaldata,
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    customer.push(item.cust_name);
+                    total_purchase.push(item.total_purchase);
+                });
+                loadChartCust(customer, total_purchase);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });
+    }
+    function refreshcostdashboard(month, year, totaldata) {
+        monthyear = [];
+        totalcost = [];
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetCostDashboard?month=" + month + "&year=" + year + "&total=" + totaldata,
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    monthyear.push(item.Monthyear);
+                    totalcost.push(item.totalcost);
+                });
+                loadChartCost(monthyear, totalcost);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });
+    }
+    function refreshprofitlossdashboard(month, year, totaldata) {
+        monthyearprofit = [];
+        totalprofit = [];
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetProfitLoss?month=" + month + "&year=" + year + "&total=" + totaldata,
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    monthyearprofit.push(item.Monthyear);
+                    totalprofit.push(item.totalincome);
+                });
+                loadChartProfit(monthyearprofit, totalprofit);
+            },
+            error: function (errormessage) {
+                $('#h2').html(errormessage.responseText);
+                return false;
+            }
+        });
+    }
+
+    $(function () {
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+
+            dateFormat: 'MM yy',
+            onClose: function (dateText, inst) {
+                debugger;
+                $("#year").val(inst.selectedYear);
+                $("#month").val(inst.selectedMonth + 1);
+
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+            }
+        });
     });
     function loadChart(category, val2) {
-       
+
         Highcharts.chart('containers', {
             chart: {
                 type: 'column'
@@ -175,7 +322,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Population (millions)',
+                    text: 'Total (items)',
                     align: 'high'
                 },
                 labels: {
@@ -183,7 +330,7 @@
                 }
             },
             tooltip: {
-                valueSuffix: ' millions'
+                valueSuffix: ' items'
             },
             plotOptions: {
                 bar: {
@@ -212,7 +359,7 @@
                 data: val2
             }]
         });
-    }  
+    }
     function loadChartCust(category, val2) {
 
         Highcharts.chart('CustContainer', {
@@ -234,7 +381,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Population (millions)',
+                    text: 'Rupiah',
                     align: 'high'
                 },
                 labels: {
@@ -242,7 +389,7 @@
                 }
             },
             tooltip: {
-                valueSuffix: ' millions'
+                valueSuffix: ' Rupiah'
             },
             plotOptions: {
                 bar: {
@@ -271,7 +418,7 @@
                 data: val2
             }]
         });
-    }  
+    }
     function loadChartCost(category, val2) {
 
         Highcharts.chart('CostContainer', {
@@ -293,7 +440,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Population (millions)',
+                    text: 'Rupiah',
                     align: 'high'
                 },
                 labels: {
@@ -301,7 +448,7 @@
                 }
             },
             tooltip: {
-                valueSuffix: ' millions'
+                valueSuffix: ' Rupiah'
             },
             plotOptions: {
                 bar: {
@@ -330,7 +477,7 @@
                 data: val2
             }]
         });
-    }  
+    }
     function loadChartProfit(category, val2) {
 
         Highcharts.chart('ProfitContainer', {
@@ -352,7 +499,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Population (millions)',
+                    text: 'Rupiah',
                     align: 'high'
                 },
                 labels: {
@@ -360,7 +507,7 @@
                 }
             },
             tooltip: {
-                valueSuffix: ' millions'
+                valueSuffix: 'Rupiah'
             },
             plotOptions: {
                 bar: {
@@ -389,5 +536,5 @@
                 data: val2
             }]
         });
-    }  
+    }
 </script>
