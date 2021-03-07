@@ -380,8 +380,13 @@ namespace MVCOemahJowo.Controllers.TransactionMaster2
                 using (db)
                 {
                     mt_trans_hdr transdt = db.mt_trans_hdr.Where(x => x.TRANS_ID == ids).FirstOrDefault<mt_trans_hdr>();
+                    List<mt_trans_dtl> dtldt = transdt.mt_trans_dtl.ToList();
                     try
                     {
+                        foreach(var dtlfld in dtldt)
+                        {
+                            db.mt_trans_dtl.Remove(dtlfld);
+                        }
                         db.mt_trans_hdr.Remove(transdt);
                         db.SaveChanges();
                         return Json(new { success = true, message = "Deleted successfully" }, JsonRequestBehavior.AllowGet);
